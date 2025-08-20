@@ -5,9 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
- * Represents the User entity in the database.
- * This class stores user-related information, including credentials and roles.
+ * Represents a user in the system.
+ * This entity stores user-related information, including their credentials, unique ID,
+ * and relationships to other entities like artifacts and pulls.
  *
  * @author Alejo Romero
  * @version 1.0
@@ -18,6 +21,10 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "users")
 public class Users {
+    /**
+     * The unique primary key for the user entity.
+     * It is an auto-generated identity value.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -43,12 +50,26 @@ public class Users {
     private String uid;
 
     /**
+     * A list of artifacts owned by the user.
+     * This establishes a one-to-many relationship with the UsersArtifacts entity.
+     */
+    @OneToMany(mappedBy = "user")
+    private List<UsersArtifacts> usersArtifacts;
+
+    /**
+     * A list of all pull records associated with this user.
+     * This defines a one-to-many relationship with the Pulls entity.
+     */
+    @OneToMany(mappedBy = "user")
+    private List<Pulls> pulls;
+
+    /**
      * Flag indicating if the user has administrative privileges.
      */
     private Boolean isAdmin;
 
     /**
-     * Flag indicating if the user account is marked as deleted.
+     * A boolean flag used for soft deletion, indicating if the user is logically deleted.
      */
     private Boolean isDeleted;
 }
