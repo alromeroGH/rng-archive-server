@@ -20,7 +20,7 @@ CREATE TABLE rng_archive.news (
 CREATE TABLE rng_archive.stats (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     stat_name VARCHAR(25) NOT NULL,
-    stat_type ENUM('main_only', 'both'),
+    stat_type ENUM('main_only', 'both') NOT NULL,
     is_deleted TINYINT DEFAULT 0
 );
 
@@ -69,7 +69,7 @@ CREATE TABLE rng_archive.secondary_stats (
 
 CREATE TABLE rng_archive.banners (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    banner_type ENUM('limited_character', 'weapon', 'standard'),
+    banner_type ENUM('limited_character', 'weapon', 'standard') NOT NULL,
     banner_name VARCHAR(60) NOT NULL,
     banner_version VARCHAR(5) NOT NULL,
     banner_phase ENUM('1', '2', '-') NOT NULL,

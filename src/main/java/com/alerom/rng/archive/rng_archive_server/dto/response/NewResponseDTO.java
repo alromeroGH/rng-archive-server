@@ -1,0 +1,41 @@
+package com.alerom.rng.archive.rng_archive_server.dto.response;
+
+import com.alerom.rng.archive.rng_archive_server.models.enums.NewTypeEnum;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+import java.util.Date;
+
+/**
+ * DTO for retrieving news item data.
+ * This object is used to transfer a complete representation of a news item from the service layer to the client.
+ */
+@Getter
+@AllArgsConstructor
+public class NewResponseDTO {
+
+    /**
+     * The unique identifier of the news item.
+     */
+    private Long id;
+
+    /**
+     * The type of the news item (e.g., EVENT, BANNER, CODE).
+     */
+    private NewTypeEnum newType;
+
+    /**
+     * A brief description or summary of the news item.
+     */
+    private String description;
+
+    /**
+     * A URL or external link for the full details of the news item.
+     */
+    private String link;
+
+    /**
+     * The date when the news item was published.
+     */
+    private Date dateOfPublication;
+}
