@@ -22,7 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "units")
-public class Units {
+public class Unit {
     /**
      * The unique primary key for the unit entity.
      * It is an auto-generated identity value.
@@ -62,14 +62,14 @@ public class Units {
      * This defines a one-to-many relationship with the PullsUnits entity.
      */
     @OneToMany(mappedBy = "unit")
-    private List<PullsUnits> pullsUnits;
+    private List<PullUnit> pullsUnits;
 
     /**
      * A list of all banners on which this unit has been featured.
      * This defines a one-to-many relationship with the BannersUnits entity.
      */
     @OneToMany(mappedBy = "unit")
-    private List<BannersUnits> bannersUnits;
+    private List<BannerUnit> bannersUnits;
 
     /**
      * A URL or file path to the image representing the unit.

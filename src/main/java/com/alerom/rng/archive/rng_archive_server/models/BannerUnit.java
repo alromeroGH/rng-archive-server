@@ -6,8 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Represents a join table or a relationship between a pull event and the units obtained from it.
- * This entity links Pulls and Units to define which units were received in a specific pull.
+ * Represents a join table or a relationship between a banner and the units it features.
+ * This entity links Banners and Units to define which units are available on a specific banner.
  *
  * @author Alejo Romero
  * @version 1.0
@@ -16,10 +16,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "pulls_units")
-public class PullsUnits {
+@Table(name = "banners_units")
+public class BannerUnit {
     /**
-     * The unique primary key for the pulls_units entity.
+     * The unique primary key for the banners_units entity.
      * It is an auto-generated identity value.
      */
     @Id
@@ -27,20 +27,20 @@ public class PullsUnits {
     private Long id;
 
     /**
-     * The pull event from which the unit was obtained.
-     * This establishes a many-to-one relationship with the Pulls entity.
+     * The banner that features the unit.
+     * This establishes a many-to-one relationship with the Banners entity.
      */
     @ManyToOne
-    @JoinColumn(name = "pull_id")
-    private Pulls pull;
+    @JoinColumn(name = "banner_id")
+    private Banner banner;
 
     /**
-     * The unit obtained from the pull event.
+     * The unit that is featured on the banner.
      * This establishes a many-to-one relationship with the Units entity.
      */
     @ManyToOne
     @JoinColumn(name = "unit_id")
-    private Units unit;
+    private Unit unit;
 
     /**
      * A boolean flag used for soft deletion, indicating if the relationship is logically deleted.

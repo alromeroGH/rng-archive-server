@@ -10,7 +10,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class PullUnitUpdateDTo {
+public class PullUnitUpdateDTO {
 
     /**
      * The unique identifier of the pull event.

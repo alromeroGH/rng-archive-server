@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "users_artifacts")
-public class UsersArtifacts {
+public class UserArtifact {
     /**
      * The unique primary key for the user's artifact entity.
      * It is an auto-generated identity value.
@@ -35,7 +35,7 @@ public class UsersArtifacts {
      */
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Users user;
+    private User user;
 
     /**
      * The main stat of this artifact.
@@ -43,7 +43,7 @@ public class UsersArtifacts {
      */
     @ManyToOne
     @JoinColumn(name = "main_stat_id")
-    private Stats stat;
+    private Stat stat;
 
     /**
      * The specific piece of the artifact (e.g., Flower of Life from a certain set).
@@ -51,14 +51,14 @@ public class UsersArtifacts {
      */
     @ManyToOne
     @JoinColumn(name = "artifact_piece_id")
-    private ArtifactPieces artifactPiece;
+    private ArtifactPiece artifactPiece;
 
     /**
      * A list of all secondary stats associated with this artifact.
      * This defines a one-to-many relationship with the SecondaryStats entity.
      */
-    @OneToMany(mappedBy = "usersArtifacts")
-    private List<SecondaryStats> secondaryStats;
+    @OneToMany(mappedBy = "userArtifact")
+    private List<SecondaryStat> secondaryStats;
 
     /**
      * A boolean flag used for soft deletion, indicating if the artifact is logically deleted.

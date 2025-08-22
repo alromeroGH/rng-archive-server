@@ -1,6 +1,6 @@
 package com.alerom.rng.archive.rng_archive_server.models;
 
-import com.alerom.rng.archive.rng_archive_server.models.enums.NewTypeEnum;
+import com.alerom.rng.archive.rng_archive_server.models.enums.NewsTypeEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,7 +34,7 @@ public class News {
      * The value is stored as a string representation of the NewTypeEnum.
      */
     @Enumerated(EnumType.STRING)
-    private NewTypeEnum newType;
+    private NewsTypeEnum newsType;
 
     /**
      * A brief description or summary of the news item.

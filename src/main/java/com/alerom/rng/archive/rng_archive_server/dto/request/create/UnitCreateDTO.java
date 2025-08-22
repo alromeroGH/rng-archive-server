@@ -14,7 +14,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class UnitsCreateDTO {
+public class UnitCreateDTO {
 
     /**
      * The type of the unit (e.g., CHARACTER, WEAPON).

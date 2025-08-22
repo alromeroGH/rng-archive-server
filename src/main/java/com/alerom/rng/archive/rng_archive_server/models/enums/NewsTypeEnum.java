@@ -4,7 +4,7 @@ package com.alerom.rng.archive.rng_archive_server.models.enums;
  * Represents the type of a news item.
  * This enum helps categorize different kinds of announcements made in the game.
  */
-public enum NewTypeEnum {
+public enum NewsTypeEnum {
     /**
      * News related to special in-game events.
      */
@@ -22,7 +22,7 @@ public enum NewTypeEnum {
 
     private final String value;
 
-    NewTypeEnum(String value) {
+    NewsTypeEnum(String value) {
         this.value = value;
     }
 
