@@ -21,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "artifact_pieces")
-public class ArtifactPieces {
+public class ArtifactPiece {
     /**
      * The unique primary key for the artifact piece entity.
      * It is an auto-generated identity value.
@@ -48,14 +48,14 @@ public class ArtifactPieces {
      */
     @ManyToOne
     @JoinColumn(name = "set_id")
-    private ArtifactSets artifactSets;
+    private ArtifactSet artifactSet;
 
     /**
      * A list of user-owned instances of this artifact piece.
      * This defines a one-to-many relationship with the UsersArtifacts entity.
      */
     @OneToMany(mappedBy = "artifactPiece")
-    private List<UsersArtifacts> usersArtifacts;
+    private List<UserArtifact> usersArtifacts;
 
     /**
      * A boolean flag used for soft deletion, indicating if the artifact piece is logically deleted.

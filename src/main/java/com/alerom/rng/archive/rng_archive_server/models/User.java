@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class Users {
+public class User {
     /**
      * The unique primary key for the user entity.
      * It is an auto-generated identity value.
@@ -54,14 +54,14 @@ public class Users {
      * This establishes a one-to-many relationship with the UsersArtifacts entity.
      */
     @OneToMany(mappedBy = "user")
-    private List<UsersArtifacts> usersArtifacts;
+    private List<UserArtifact> usersArtifacts;
 
     /**
      * A list of all pull records associated with this user.
      * This defines a one-to-many relationship with the Pulls entity.
      */
     @OneToMany(mappedBy = "user")
-    private List<Pulls> pulls;
+    private List<Pull> pulls;
 
     /**
      * Flag indicating if the user has administrative privileges.

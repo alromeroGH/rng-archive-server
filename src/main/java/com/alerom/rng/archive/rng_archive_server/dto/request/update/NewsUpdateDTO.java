@@ -1,6 +1,6 @@
 package com.alerom.rng.archive.rng_archive_server.dto.request.update;
 
-import com.alerom.rng.archive.rng_archive_server.models.enums.NewTypeEnum;
+import com.alerom.rng.archive.rng_archive_server.models.enums.NewsTypeEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -13,14 +13,14 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class NewUpdateDTO {
+public class NewsUpdateDTO {
 
     /**
      * The new type of the news item (e.g., EVENT, BANNER, CODE).
      * This field is required.
      */
     @NotNull(message = "The new type is required")
-    private NewTypeEnum newType;
+    private NewsTypeEnum newsType;
 
     /**
      * The new brief description or summary of the news item.

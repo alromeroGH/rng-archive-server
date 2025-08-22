@@ -21,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "pulls")
-public class Pulls {
+public class Pull {
     /**
      * The unique primary key for the pull entity.
      * It is an auto-generated identity value.
@@ -58,7 +58,7 @@ public class Pulls {
      */
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Users user;
+    private User user;
 
     /**
      * The banner on which the pull was performed.
@@ -66,14 +66,14 @@ public class Pulls {
      */
     @ManyToOne
     @JoinColumn(name = "banner_id")
-    private Banners banner;
+    private Banner banner;
 
     /**
      * A list of units obtained in this pull event.
      * This defines a one-to-many relationship with the PullsUnits entity.
      */
     @OneToMany(mappedBy = "pull")
-    private List<PullsUnits> pullsUnits;
+    private List<PullUnit> pullsUnits;
 
     /**
      * A boolean flag used for soft deletion, indicating if the pull record is logically deleted.

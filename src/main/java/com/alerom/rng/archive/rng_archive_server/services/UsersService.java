@@ -3,8 +3,8 @@ package com.alerom.rng.archive.rng_archive_server.services;
 import com.alerom.rng.archive.rng_archive_server.exceptions.EmailAlreadyExistException;
 import com.alerom.rng.archive.rng_archive_server.exceptions.UidAlreadyExistException;
 import com.alerom.rng.archive.rng_archive_server.exceptions.UserNotFoundException;
-import com.alerom.rng.archive.rng_archive_server.models.Users;
-import com.alerom.rng.archive.rng_archive_server.repositories.UsersRepository;
+import com.alerom.rng.archive.rng_archive_server.models.User;
+import com.alerom.rng.archive.rng_archive_server.repositories.UserRepository;
 import com.alerom.rng.archive.rng_archive_server.security.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,7 +23,7 @@ import java.util.Optional;
  */
 @Service
 public class UsersService {
-    private final UsersRepository usersRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
@@ -31,14 +31,14 @@ public class UsersService {
     /**
      * Constructs the UsersService with the required dependencies.
      *
-     * @param usersRepository The repository for user data access.
+     * @param userRepository The repository for user data access.
      * @param passwordEncoder The encoder for user passwords.
      * @param jwtUtil The utility class for JWT operations.
      * @param authenticationManager The manager for user authentication.
      */
 
-    public UsersService(UsersRepository usersRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, AuthenticationManager authenticationManager) {
-        this.usersRepository = usersRepository;
+    public UsersService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, AuthenticationManager authenticationManager) {
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
         this.authenticationManager = authenticationManager;
@@ -53,7 +53,7 @@ public class UsersService {
      * @throws BadCredentialsException if the password is incorrect.
      */
     public JwtResponse login(LoginRequest loginRequest) {
-        Optional<Users> optionalUsers = usersRepository.findByEmail(loginRequest.getEmail());
+        Optional<User> optionalUsers = userRepository.findByEmail(loginRequest.getEmail());
 
         if (optionalUsers.isEmpty()) {
             throw new UserNotFoundException("User not found");
@@ -76,8 +76,8 @@ public class UsersService {
      * @throws UidAlreadyExistException if the UID is already in use.
      */
     public void register(RegisterRequest registerRequest) {
-        Boolean userEmail = usersRepository.existsByEmail(registerRequest.getEmail());
-        Boolean userUid = usersRepository.existsByUid(registerRequest.getUid());
+        Boolean userEmail = userRepository.existsByEmail(registerRequest.getEmail());
+        Boolean userUid = userRepository.existsByUid(registerRequest.getUid());
 
         if (userEmail) {
             throw new EmailAlreadyExistException("Email already exist");
@@ -85,13 +85,13 @@ public class UsersService {
             throw new UidAlreadyExistException("UID already exist");
         }
 
-        Users newUser = new Users();
+        User newUser = new User();
         newUser.setEmail(registerRequest.getEmail());
         newUser.setUserName(registerRequest.getUserName());
         newUser.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         newUser.setUid(registerRequest.getUid());
         newUser.setIsAdmin(false);
 
-        usersRepository.save(newUser);
+        userRepository.save(newUser);
     }
 }

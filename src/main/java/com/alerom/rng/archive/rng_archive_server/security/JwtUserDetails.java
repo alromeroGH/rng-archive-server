@@ -1,6 +1,6 @@
 package com.alerom.rng.archive.rng_archive_server.security;
 
-import com.alerom.rng.archive.rng_archive_server.models.Users;
+import com.alerom.rng.archive.rng_archive_server.models.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +16,7 @@ import java.util.List;
  * @author Alejo Romero
  * @version 1.0
  */
-public record JwtUserDetails(Users user) implements UserDetails {
+public record JwtUserDetails(User user) implements UserDetails {
 
     /**
      * Returns the authorities (roles) granted to the user.
@@ -36,7 +36,7 @@ public record JwtUserDetails(Users user) implements UserDetails {
     /**
      * Returns the user's password.
      *
-     * @return The user's password from the Users entity.
+     * @return The user's password from the User entity.
      */
     @Override
     public String getPassword() {

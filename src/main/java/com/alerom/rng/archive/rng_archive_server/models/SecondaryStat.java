@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "secondary_stats")
-public class SecondaryStats {
+public class SecondaryStat {
     /**
      * The unique primary key for the secondary stat entity.
      * It is an auto-generated identity value.
@@ -33,7 +33,7 @@ public class SecondaryStats {
      */
     @ManyToOne
     @JoinColumn(name = "stat_id")
-    private Stats stat;
+    private Stat stat;
 
     /**
      * The user's specific artifact piece to which this secondary stat belongs.
@@ -41,7 +41,7 @@ public class SecondaryStats {
      */
     @ManyToOne
     @JoinColumn(name = "user_artifact_id")
-    private UsersArtifacts usersArtifacts;
+    private UserArtifact userArtifact;
 
     /**
      * A boolean flag used for soft deletion, indicating if the secondary stat record is logically deleted.

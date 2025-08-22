@@ -1,6 +1,6 @@
 package com.alerom.rng.archive.rng_archive_server.dto.response;
 
-import com.alerom.rng.archive.rng_archive_server.models.enums.NewTypeEnum;
+import com.alerom.rng.archive.rng_archive_server.models.enums.NewsTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,7 +12,7 @@ import java.util.Date;
  */
 @Getter
 @AllArgsConstructor
-public class NewResponseDTO {
+public class NewsResponseDTO {
 
     /**
      * The unique identifier of the news item.
@@ -22,7 +22,7 @@ public class NewResponseDTO {
     /**
      * The type of the news item (e.g., EVENT, BANNER, CODE).
      */
-    private NewTypeEnum newType;
+    private NewsTypeEnum newsType;
 
     /**
      * A brief description or summary of the news item.

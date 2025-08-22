@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "stats")
-public class Stats {
+public class Stat {
     /**
      * The unique primary key for the stat entity.
      * It is an auto-generated identity value.
@@ -46,14 +46,14 @@ public class Stats {
      * This defines a one-to-many relationship with the UsersArtifacts entity.
      */
     @OneToMany(mappedBy = "stat")
-    private List<UsersArtifacts> usersArtifacts;
+    private List<UserArtifact> usersArtifacts;
 
     /**
      * A list of secondary stats that have this specific stat.
      * This defines a one-to-many relationship with the SecondaryStats entity.
      */
     @OneToMany(mappedBy = "stat")
-    private List<SecondaryStats> secondaryStats;
+    private List<SecondaryStat> secondaryStats;
 
     /**
      * A boolean flag used for soft deletion, indicating if the stat is logically deleted.

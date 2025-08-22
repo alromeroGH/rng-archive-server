@@ -22,7 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "banners")
-public class Banners {
+public class Banner {
     /**
      * The unique primary key for the banner entity.
      * It is an auto-generated identity value.
@@ -70,14 +70,14 @@ public class Banners {
      * This defines a one-to-many relationship with the Pulls entity.
      */
     @OneToMany(mappedBy = "banner")
-    private List<Pulls> pulls;
+    private List<Pull> pulls;
 
     /**
      * A list of units (characters or weapons) featured on this banner.
      * This defines a one-to-many relationship with the BannersUnits entity.
      */
     @OneToMany(mappedBy = "banner")
-    private List<BannersUnits> bannersUnits;
+    private List<BannerUnit> bannersUnits;
 
     /**
      * A boolean flag used for soft deletion, indicating if the banner is logically deleted.
