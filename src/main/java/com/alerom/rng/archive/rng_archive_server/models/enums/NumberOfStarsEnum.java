@@ -1,5 +1,7 @@
 package com.alerom.rng.archive.rng_archive_server.models.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 /**
  * Represents the rarity of a unit based on a star rating.
  */
@@ -23,6 +25,16 @@ public enum NumberOfStarsEnum {
 
     NumberOfStarsEnum(String value) {
         this.value = value;
+    }
+
+    @JsonCreator
+    public static NumberOfStarsEnum fromValue(String value) {
+        for (NumberOfStarsEnum star : NumberOfStarsEnum.values()) {
+            if (star.getValue().equals(value)) {
+                return star;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant for value: " + value);
     }
 
     /**

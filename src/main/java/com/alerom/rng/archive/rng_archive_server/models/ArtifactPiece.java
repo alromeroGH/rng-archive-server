@@ -32,9 +32,7 @@ public class ArtifactPiece {
 
     /**
      * The type of the artifact piece (e.g., Flower, Plume, Sands, Goblet, Circlet).
-     * The value is stored as a string representation of the PieceTypeEnum.
      */
-    @Enumerated(EnumType.STRING)
     private PieceTypeEnum pieceType;
 
     /**

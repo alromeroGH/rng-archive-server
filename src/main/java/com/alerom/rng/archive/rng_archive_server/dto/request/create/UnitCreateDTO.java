@@ -3,6 +3,7 @@ package com.alerom.rng.archive.rng_archive_server.dto.request.create;
 import com.alerom.rng.archive.rng_archive_server.models.enums.NumberOfStarsEnum;
 import com.alerom.rng.archive.rng_archive_server.models.enums.UnitBannerEnum;
 import com.alerom.rng.archive.rng_archive_server.models.enums.UnitTypeEnum;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -49,5 +50,6 @@ public class UnitCreateDTO {
      * This field is required.
      */
     @NotBlank(message = "The unit image is required")
+    @Column(unique = true)
     private String unitImage;
 }

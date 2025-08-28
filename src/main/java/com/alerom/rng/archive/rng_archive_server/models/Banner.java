@@ -33,9 +33,7 @@ public class Banner {
 
     /**
      * The type of banner (e.g., LIMITED_CHARACTER, WEAPON, STANDARD).
-     * The value is stored as a string representation of the BannerTypeEnum.
      */
-    @Enumerated(EnumType.STRING)
     private BannerTypeEnum bannerType;
 
     /**
@@ -50,9 +48,7 @@ public class Banner {
 
     /**
      * The phase of the banner within its version (e.g., PHASE_1, PHASE_2).
-     * The value is stored as a string representation of the BannerPhaseEnum.
      */
-    @Enumerated(EnumType.STRING)
     private BannerPhaseEnum bannerPhase;
 
     /**

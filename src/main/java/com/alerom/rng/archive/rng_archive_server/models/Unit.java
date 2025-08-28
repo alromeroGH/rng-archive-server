@@ -33,9 +33,7 @@ public class Unit {
 
     /**
      * The type of the unit (e.g., CHARACTER, WEAPON).
-     * The value is stored as a string representation of the UnitTypeEnum.
      */
-    @Enumerated(EnumType.STRING)
     private UnitTypeEnum unitType;
 
     /**
@@ -45,16 +43,12 @@ public class Unit {
 
     /**
      * The rarity of the unit, represented by the number of stars (e.g., 3, 4, 5).
-     * The value is stored as a string representation of the NumberOfStarsEnum.
      */
-    @Enumerated(EnumType.STRING)
     private NumberOfStarsEnum numberOfStars;
 
     /**
      * The type of banner on which the unit is available (e.g., ALL, CHARACTER, WEAPON).
-     * The value is stored as a string representation of the UnitBannerEnum.
      */
-    @Enumerated(EnumType.STRING)
     private UnitBannerEnum unitBanner;
 
     /**

@@ -52,4 +52,13 @@ public record JwtUserDetails(User user) implements UserDetails {
     public String getUsername() {
         return user.getEmail();
     }
+
+    /**
+     * Returns the user's id.
+     *
+     * @return The user's id from the User entity.
+     */
+    public Long getId() {
+        return user.getId();
+    }
 }

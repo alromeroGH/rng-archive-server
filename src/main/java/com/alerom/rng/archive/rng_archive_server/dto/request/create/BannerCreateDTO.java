@@ -2,6 +2,7 @@ package com.alerom.rng.archive.rng_archive_server.dto.request.create;
 
 import com.alerom.rng.archive.rng_archive_server.models.enums.BannerPhaseEnum;
 import com.alerom.rng.archive.rng_archive_server.models.enums.BannerTypeEnum;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -57,5 +58,6 @@ public class BannerCreateDTO {
      * This field is required.
      */
     @NotBlank(message = "The banner image is required")
+    @Column(unique = true)
     private String bannerImage;
 }

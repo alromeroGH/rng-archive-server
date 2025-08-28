@@ -25,5 +25,6 @@ public class ArtifactSetCreateDTO {
      * This field is required.
      */
     @NotBlank(message = "The set image is required")
+    @Column(unique = true)
     private String setImage;
 }

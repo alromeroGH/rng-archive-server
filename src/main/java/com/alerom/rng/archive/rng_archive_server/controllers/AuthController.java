@@ -6,7 +6,7 @@ import com.alerom.rng.archive.rng_archive_server.exceptions.UserNotFoundExceptio
 import com.alerom.rng.archive.rng_archive_server.security.JwtResponse;
 import com.alerom.rng.archive.rng_archive_server.security.LoginRequest;
 import com.alerom.rng.archive.rng_archive_server.security.RegisterRequest;
-import com.alerom.rng.archive.rng_archive_server.services.UsersService;
+import com.alerom.rng.archive.rng_archive_server.services.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,15 +25,15 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/auth")
-public class authController {
-    private final UsersService usersService;
+public class AuthController {
+    private final AuthService authService;
 
     /**
      * Constructs the authController with the necessary service.
-     * @param usersService The service for user-related operations.
+     * @param authService The service for user-related operations.
      */
-    public authController(UsersService usersService) {
-        this.usersService = usersService;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
 
     /**
@@ -46,7 +46,7 @@ public class authController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
         try {
-            JwtResponse jwtResponse = usersService.login(loginRequest);
+            JwtResponse jwtResponse = authService.login(loginRequest);
 
             return ResponseEntity.ok(jwtResponse);
 
@@ -66,7 +66,7 @@ public class authController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest) {
         try {
-            usersService.register(registerRequest);
+            authService.register(registerRequest);
 
             return ResponseEntity.status(HttpStatus.CREATED).body("User successfully registered");
         } catch (BadCredentialsException e) {

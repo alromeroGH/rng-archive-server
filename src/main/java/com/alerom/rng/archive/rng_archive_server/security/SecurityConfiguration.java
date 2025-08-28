@@ -88,6 +88,14 @@ public class SecurityConfiguration {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/images/**").permitAll()
+                        .requestMatchers("/api/user/{id}").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/api/user/update/{id}").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/api/user/update/password/{id}").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/api/admin/CharacterBanner").hasAnyRole("ADMIN")
+                        .requestMatchers("/api/admin/CharacterBanner/update/{id}").hasAnyRole("ADMIN")
+                        .requestMatchers("/api/admin/CharacterBanner/delete/{id}").hasAnyRole("ADMIN")
+                        .requestMatchers("/api/admin/CharacterBanner/add").hasAnyRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
