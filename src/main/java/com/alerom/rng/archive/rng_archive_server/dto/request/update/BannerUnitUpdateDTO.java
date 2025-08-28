@@ -13,16 +13,16 @@ import lombok.Setter;
 public class BannerUnitUpdateDTO {
 
     /**
-     * The unique identifier of the banner.
+     * The identifier of the banner.
      * This field is required.
      */
     @NotNull(message = "The banner id is required")
-    private Long bannerId;
+    private BannerUpdateDTO bannerUpdateDTO;
 
     /**
-     * The unique identifier of the unit (character or weapon).
+     * The identifier of the unit (character or weapon).
      * This field is required.
      */
     @NotNull(message = "The unit id is required")
-    private Long unitId;
+    private UnitUpdateDTO unitUpdateDTO;
 }

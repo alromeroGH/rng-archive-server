@@ -27,10 +27,12 @@ public interface UnitMapper {
 
     /**
      * Converts a {@link Unit} entity to a {@link UnitResponseDTO}.
+     * The 'unitImage' dto field is modifying with the url path
      *
      * @param unit The Unit entity to convert.
      * @return The corresponding UnitResponseDTO.
      */
+    @Mapping(target = "unitImage", expression = "java(\"http://localhost:8080/images/images_characters/\" + unit.getUnitImage())")
     UnitResponseDTO toResponseDTO(Unit unit);
 
     /**

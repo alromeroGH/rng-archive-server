@@ -1,5 +1,7 @@
 package com.alerom.rng.archive.rng_archive_server.models.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 /**
  * Represents the type of an artifact piece based on its slot.
  * Each artifact set has five different piece types.
@@ -34,6 +36,16 @@ public enum PieceTypeEnum {
 
     PieceTypeEnum(String value) {
         this.value = value;
+    }
+
+    @JsonCreator
+    public static PieceTypeEnum fromValue(String value) {
+        for (PieceTypeEnum pieceType : PieceTypeEnum.values()) {
+            if (pieceType.getValue().equals(value)) {
+                return pieceType;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant for value: " + value);
     }
 
     /**

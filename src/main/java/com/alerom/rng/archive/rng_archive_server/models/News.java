@@ -31,9 +31,7 @@ public class News {
 
     /**
      * The type of the news item (e.g., EVENT, BANNER, CODE).
-     * The value is stored as a string representation of the NewTypeEnum.
      */
-    @Enumerated(EnumType.STRING)
     private NewsTypeEnum newsType;
 
     /**

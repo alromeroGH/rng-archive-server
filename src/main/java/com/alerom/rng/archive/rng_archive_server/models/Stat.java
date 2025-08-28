@@ -36,9 +36,7 @@ public class Stat {
 
     /**
      * The type of the stat, indicating where it can be only-main stat or both.
-     * The value is stored as a string representation of the StatTypeEnum.
      */
-    @Enumerated(EnumType.STRING)
     private StatTypeEnum statType;
 
     /**

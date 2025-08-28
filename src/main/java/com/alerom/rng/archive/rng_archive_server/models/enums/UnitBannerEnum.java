@@ -1,5 +1,7 @@
 package com.alerom.rng.archive.rng_archive_server.models.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 /**
  * Represents the type of banner on which a unit is typically featured.
  * This enum helps to categorize units based on their availability in different banners.
@@ -24,6 +26,16 @@ public enum UnitBannerEnum {
 
     UnitBannerEnum(String value) {
         this.value = value;
+    }
+
+    @JsonCreator
+    public static UnitBannerEnum fromValue(String value) {
+        for (UnitBannerEnum unitBanner : UnitBannerEnum.values()) {
+            if (unitBanner.getValue().equals(value)) {
+                return unitBanner;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant for value: " + value);
     }
 
     /**

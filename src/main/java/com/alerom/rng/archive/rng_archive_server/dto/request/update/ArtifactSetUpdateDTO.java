@@ -1,5 +1,6 @@
 package com.alerom.rng.archive.rng_archive_server.dto.request.update;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +19,7 @@ public class ArtifactSetUpdateDTO {
      * This field is required.
      */
     @NotBlank(message = "The set name is required")
+    @Column(unique = true)
     private String setName;
 
     /**
@@ -25,5 +27,6 @@ public class ArtifactSetUpdateDTO {
      * This field is required.
      */
     @NotBlank(message = "The set image is required")
+    @Column(unique = true)
     private String setImage;
 }

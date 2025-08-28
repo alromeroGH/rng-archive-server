@@ -14,6 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ArtifactPieceUpdateDTO {
+
     /**
      * The new type of the artifact piece (e.g., FLOWER, FEATHER).
      */

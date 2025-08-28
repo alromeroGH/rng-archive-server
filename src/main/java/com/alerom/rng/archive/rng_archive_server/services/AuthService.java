@@ -6,7 +6,9 @@ import com.alerom.rng.archive.rng_archive_server.exceptions.UserNotFoundExceptio
 import com.alerom.rng.archive.rng_archive_server.models.User;
 import com.alerom.rng.archive.rng_archive_server.repositories.UserRepository;
 import com.alerom.rng.archive.rng_archive_server.security.*;
+import jakarta.transaction.Transactional;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,14 +17,14 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 /**
- * Service class for handling user-related business logic, including
- * authentication, registration, and data management.
+ * Service class for handling authentication-related business logic, including
+ * login and registration.
  *
  * @author Alejo Romero
  * @version 1.0
  */
 @Service
-public class UsersService {
+public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
@@ -37,7 +39,7 @@ public class UsersService {
      * @param authenticationManager The manager for user authentication.
      */
 
-    public UsersService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, AuthenticationManager authenticationManager) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
@@ -52,6 +54,7 @@ public class UsersService {
      * @throws UserNotFoundException if the user is not found.
      * @throws BadCredentialsException if the password is incorrect.
      */
+    @Transactional
     public JwtResponse login(LoginRequest loginRequest) {
         Optional<User> optionalUsers = userRepository.findByEmail(loginRequest.getEmail());
 
@@ -75,6 +78,7 @@ public class UsersService {
      * @throws EmailAlreadyExistException if the email is already in use.
      * @throws UidAlreadyExistException if the UID is already in use.
      */
+    @Transactional
     public void register(RegisterRequest registerRequest) {
         Boolean userEmail = userRepository.existsByEmail(registerRequest.getEmail());
         Boolean userUid = userRepository.existsByUid(registerRequest.getUid());
