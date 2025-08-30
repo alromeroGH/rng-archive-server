@@ -95,6 +95,7 @@ public class AuthService {
         newUser.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         newUser.setUid(registerRequest.getUid());
         newUser.setIsAdmin(false);
+        newUser.setIsDeleted(false);
 
         userRepository.save(newUser);
     }

@@ -10,6 +10,8 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class CharacterBannerResponseDTO {
+
+    private Long id;
     /**
      * The name of the banner (e.g., "Ballad in Goblets").
      */

@@ -3,26 +3,31 @@ package com.alerom.rng.archive.rng_archive_server.services.admin;
 import com.alerom.rng.archive.rng_archive_server.dto.request.create.CharacterBannerCreateDTO;
 import com.alerom.rng.archive.rng_archive_server.dto.request.update.CharacterBannerUpdateDTO;
 import com.alerom.rng.archive.rng_archive_server.dto.response.CharacterBannerResponseDTO;
-import com.alerom.rng.archive.rng_archive_server.exceptions.BannerNotFoundException;
-import com.alerom.rng.archive.rng_archive_server.exceptions.InvalidUnitException;
-import com.alerom.rng.archive.rng_archive_server.exceptions.LimitException;
-import com.alerom.rng.archive.rng_archive_server.exceptions.UnitNotFoundException;
+import com.alerom.rng.archive.rng_archive_server.exceptions.*;
 import com.alerom.rng.archive.rng_archive_server.mappers.UnitMapper;
 import com.alerom.rng.archive.rng_archive_server.models.Banner;
 import com.alerom.rng.archive.rng_archive_server.models.BannerUnit;
 import com.alerom.rng.archive.rng_archive_server.models.Unit;
+import com.alerom.rng.archive.rng_archive_server.models.enums.BannerTypeEnum;
 import com.alerom.rng.archive.rng_archive_server.models.enums.NumberOfStarsEnum;
 import com.alerom.rng.archive.rng_archive_server.repositories.BannerRepository;
 import com.alerom.rng.archive.rng_archive_server.repositories.BannerUnitRepository;
 import com.alerom.rng.archive.rng_archive_server.repositories.UnitRepository;
+import com.alerom.rng.archive.rng_archive_server.utils.ImageUtils;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class AdminCharacterBannerService {
+
+    @Value("${app.banner-image-upload-dir:src/main/resources/images/images_banners/}")
+    private String imageUploadDir;
+
     private final BannerRepository bannerRepository;
     private final BannerUnitRepository bannerUnitRepository;
     private final UnitRepository unitRepository;
@@ -37,30 +42,49 @@ public class AdminCharacterBannerService {
 
     @Transactional
     public CharacterBannerResponseDTO addCharacterBanner(CharacterBannerCreateDTO characterBannerCreateDTO) {
-        Banner banner = bannerRepository.findById(characterBannerCreateDTO.getBannerId())
-                .orElseThrow(() -> new BannerNotFoundException("Banner not found."));
-
-        Unit fiveStartCharacter = unitRepository.findById(characterBannerCreateDTO.getFiveStartCharacterId())
+        Unit fiveStartCharacter = unitRepository.findById(characterBannerCreateDTO.getFiveStarCharacterId())
                 .orElseThrow(() -> new UnitNotFoundException("Five-star character not found."));
 
         if (fiveStartCharacter.getNumberOfStars() != NumberOfStarsEnum.FIVE_STARS) {
             throw new InvalidUnitException("The character must be five stars");
         }
 
-        List<Unit> fourStartCharacters = (List<Unit>) unitRepository.findAllById(characterBannerCreateDTO.getFourStartCharacterIds());
+        List<Unit> fourStartCharacters = (List<Unit>) unitRepository.findAllById(characterBannerCreateDTO.getFourStarCharacterIds());
 
         if (fourStartCharacters.size() != 3) {
             throw new LimitException("Amount of four stars characters invalid");
         }
 
+        Banner banner = new Banner();
+
+        banner.setBannerName(characterBannerCreateDTO.getBannerName());
+        banner.setBannerType(BannerTypeEnum.LIMITED_CHARACTER);
+        banner.setBannerVersion(characterBannerCreateDTO.getBannerVersion());
+        banner.setBannerPhase(characterBannerCreateDTO.getBannerPhase());
+        banner.setBannerStartDate(characterBannerCreateDTO.getBannerStartDate());
+        banner.setIsDeleted(false);
+
+        String bannerImageName;
+        try {
+            bannerImageName = ImageUtils.saveBase64Image(characterBannerCreateDTO.getBannerImage(), imageUploadDir);
+        } catch (IOException e) {
+            throw new InvalidImageException("Failed to save banner image");
+        }
+
+        banner.setBannerImage(bannerImageName);
+
+        bannerRepository.save(banner);
+
+
         BannerUnit fiveStartRelation = new BannerUnit();
 
         fiveStartRelation.setBanner(banner);
         fiveStartRelation.setUnit(fiveStartCharacter);
+        fiveStartRelation.setIsDeleted(false);
 
         bannerUnitRepository.save(fiveStartRelation);
 
-        fourStartCharacters.forEach(fs -> {
+        for (Unit fs : fourStartCharacters) {
             if (fs.getNumberOfStars() != NumberOfStarsEnum.FOUR_STARS) {
                 throw new InvalidUnitException("All the characters must be four stars");
             }
@@ -68,11 +92,13 @@ public class AdminCharacterBannerService {
 
             fourStartRelation.setBanner(banner);
             fourStartRelation.setUnit(fs);
+            fourStartRelation.setIsDeleted(false);
 
             bannerUnitRepository.save(fourStartRelation);
-        });
+        }
 
         return new CharacterBannerResponseDTO(
+                banner.getId(),
                 banner.getBannerName(),
                 banner.getBannerVersion(),
                 banner.getBannerPhase(),
@@ -82,6 +108,7 @@ public class AdminCharacterBannerService {
                 "http://localhost:8080/images/images_banners/" + banner.getBannerImage()
         );
     }
+
 
     public List<CharacterBannerResponseDTO> listCharacterBanner() {
         List<Banner> banners = bannerRepository.findCharacterBanners();
@@ -98,6 +125,7 @@ public class AdminCharacterBannerService {
             List<Unit> fourStartCharacters = getFourStartCharacters(bannerUnits);
 
             characterBanners.add(new CharacterBannerResponseDTO(
+                    banner.getId(),
                     banner.getBannerName(),
                     banner.getBannerVersion(),
                     banner.getBannerPhase(),
@@ -113,18 +141,39 @@ public class AdminCharacterBannerService {
 
     @Transactional
     public CharacterBannerResponseDTO updateCharacterBanner(Long bannerId, CharacterBannerUpdateDTO characterBannerUpdateDTO) {
-        Banner banner = getBanner(characterBannerUpdateDTO.getBannerUpdateId());
+        Banner banner = getBanner(bannerId);
 
-        bannerUnitRepository.softDeleteByBanner(getBanner(bannerId));
+        banner.setBannerName(characterBannerUpdateDTO.getBannerName());
+        banner.setBannerVersion(characterBannerUpdateDTO.getBannerVersion());
+        banner.setBannerPhase(characterBannerUpdateDTO.getBannerPhase());
+        banner.setBannerStartDate(characterBannerUpdateDTO.getBannerStartDate());
+        banner.setIsDeleted(false);
 
-        Unit fiveStartCharacter = unitRepository.findById(characterBannerUpdateDTO.getFiveStartCharacterUpdateId())
+        String bannerImageName;
+        String[] currentImageFormat = characterBannerUpdateDTO.getBannerImage().split("\\.");
+
+        if (characterBannerUpdateDTO.getBannerImage().startsWith("data:image")) {
+            try {
+                bannerImageName = ImageUtils.saveBase64Image(characterBannerUpdateDTO.getBannerImage(), imageUploadDir);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to save banner image", e);
+            }
+        } else {
+            bannerImageName = characterBannerUpdateDTO.getBannerImage();
+        }
+
+        banner.setBannerImage(bannerImageName);
+
+        bannerRepository.save(banner);
+
+        Unit fiveStartCharacter = unitRepository.findById(characterBannerUpdateDTO.getFiveStarCharacterUpdateId())
                 .orElseThrow(() -> new UnitNotFoundException("Five-star character not found."));
 
         if (fiveStartCharacter.getNumberOfStars() != NumberOfStarsEnum.FIVE_STARS) {
             throw new InvalidUnitException("The character must be five stars");
         }
 
-        List<Unit> fourStartCharacters = (List<Unit>) unitRepository.findAllById(characterBannerUpdateDTO.getFourStartCharacterUpdateIds());
+        List<Unit> fourStartCharacters = (List<Unit>) unitRepository.findAllById(characterBannerUpdateDTO.getFourStarCharacterUpdateIds());
 
         if (fourStartCharacters.size() != 3) {
             throw new LimitException("Amount of four stars characters invalid");
@@ -136,7 +185,7 @@ public class AdminCharacterBannerService {
         fiveStarRelation.setIsDeleted(false);
         bannerUnitRepository.save(fiveStarRelation);
 
-        fourStartCharacters.forEach(fs -> {
+        for (Unit fs : fourStartCharacters) {
             if (fs.getNumberOfStars() != NumberOfStarsEnum.FOUR_STARS) {
                 throw new InvalidUnitException("All the characters must be four stars");
             }
@@ -144,11 +193,13 @@ public class AdminCharacterBannerService {
 
             fourStartRelation.setBanner(banner);
             fourStartRelation.setUnit(fs);
+            fourStartRelation.setIsDeleted(false);
 
             bannerUnitRepository.save(fourStartRelation);
-        });
+        }
 
         return new CharacterBannerResponseDTO(
+                banner.getId(),
                 banner.getBannerName(),
                 banner.getBannerVersion(),
                 banner.getBannerPhase(),
@@ -171,6 +222,7 @@ public class AdminCharacterBannerService {
         List<Unit> fourStartCharacters = getFourStartCharacters(bannerUnits);
 
         return new CharacterBannerResponseDTO(
+                banner.getId(),
                 banner.getBannerName(),
                 banner.getBannerVersion(),
                 banner.getBannerPhase(),
