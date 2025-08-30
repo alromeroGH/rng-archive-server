@@ -3,10 +3,7 @@ package com.alerom.rng.archive.rng_archive_server.controllers.admin;
 import com.alerom.rng.archive.rng_archive_server.dto.request.create.CharacterBannerCreateDTO;
 import com.alerom.rng.archive.rng_archive_server.dto.request.update.CharacterBannerUpdateDTO;
 import com.alerom.rng.archive.rng_archive_server.dto.response.CharacterBannerResponseDTO;
-import com.alerom.rng.archive.rng_archive_server.exceptions.BannerNotFoundException;
-import com.alerom.rng.archive.rng_archive_server.exceptions.InvalidUnitException;
-import com.alerom.rng.archive.rng_archive_server.exceptions.LimitException;
-import com.alerom.rng.archive.rng_archive_server.exceptions.UnitNotFoundException;
+import com.alerom.rng.archive.rng_archive_server.exceptions.*;
 import com.alerom.rng.archive.rng_archive_server.services.admin.AdminCharacterBannerService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -34,7 +31,7 @@ public class AdminCharacterBannerController {
         } catch (BannerNotFoundException | UnitNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(e.getMessage());
-        } catch (LimitException | InvalidUnitException e) {
+        } catch (LimitException | InvalidUnitException | InvalidImageException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(e.getMessage());
         }
@@ -56,7 +53,7 @@ public class AdminCharacterBannerController {
         } catch (BannerNotFoundException | UnitNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(e.getMessage());
-        } catch (LimitException | InvalidUnitException e) {
+        } catch (LimitException | InvalidUnitException | InvalidImageException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(e.getMessage());
         }
