@@ -11,7 +11,11 @@ import java.util.List;
 @AllArgsConstructor
 public class CharacterBannerResponseDTO {
 
+    /**
+     * The unique identifier of the CharacterBanner.
+     */
     private Long id;
+
     /**
      * The name of the banner (e.g., "Ballad in Goblets").
      */
@@ -32,9 +36,9 @@ public class CharacterBannerResponseDTO {
      */
     private Date bannerStartDate;
 
-    private UnitResponseDTO FiveStartCharacterId;
+    private UnitResponseDTO FiveStarCharacter;
 
-    private List<UnitResponseDTO> fourStartCharacterIds;
+    private List<UnitResponseDTO> fourStarCharacters;
 
     /**
      * A URL or file path to the image representing the banner.

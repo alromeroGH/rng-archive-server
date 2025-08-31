@@ -11,7 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class CharacterBannerUpdateDTO {
+public class WeaponBannerUpdateDTO {
 
     @NotBlank(message = "The banner name is required")
     private String bannerName;
@@ -25,11 +25,11 @@ public class CharacterBannerUpdateDTO {
     @NotNull(message = "The banner start date is required")
     private Date bannerStartDate;
 
-    @NotNull(message = "The five start character id is required")
-    private Long fiveStarCharacterId;
+    @NotNull(message = "All the five start characters ids are required")
+    private List<Long> fiveStarWeaponIds;
 
     @NotNull(message = "All the four start characters ids are required")
-    private List<Long> fourStarCharacterIds;
+    private List<Long> fourStarWeaponIds;
 
     @NotBlank(message = "The banner image is required")
     private String bannerImage;
