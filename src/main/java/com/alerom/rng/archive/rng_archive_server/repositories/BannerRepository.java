@@ -15,10 +15,20 @@ public interface BannerRepository extends JpaRepository<Banner, Long> {
     @Query("SELECT DISTINCT b FROM Banner b JOIN b.bannersUnits bu WHERE b.bannerType = 'limited_character' AND b.isDeleted = false AND bu.isDeleted = false ORDER BY b.bannerStartDate DESC")
     List<Banner> findCharacterBanners();
 
+    @Query("SELECT DISTINCT b FROM Banner b JOIN b.bannersUnits bu WHERE b.bannerType = 'weapon' AND b.isDeleted = false AND bu.isDeleted = false ORDER BY b.bannerStartDate DESC")
+    List<Banner> findWeaponBanners();
+
     @Query("SELECT b FROM Banner b JOIN b.bannersUnits bu WHERE b.id = :id AND b.bannerType = 'limited_character' AND b.isDeleted = false AND bu.isDeleted = false")
     Optional<Banner> findCharacterBannersById(@Param("id") Long id);
+
+    @Query("SELECT b FROM Banner b JOIN b.bannersUnits bu WHERE b.id = :id AND b.bannerType = 'weapon' AND b.isDeleted = false AND bu.isDeleted = false")
+    Optional<Banner> findWeaponBannersById(@Param("id") Long id);
 
     @Modifying
     @Query("UPDATE Banner b SET b.isDeleted = true AND b.bannerImage = '' WHERE b.id = :bannerId")
     void softDeleteBanner(@Param("bannerId") Long bannerId);
+
+    @Modifying
+    @Query("UPDATE Banner b SET b.isDeleted = true WHERE b = :banner")
+    void softDeleteBanner(@Param("banner") Banner banner);
 }

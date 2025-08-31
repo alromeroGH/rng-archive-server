@@ -1,34 +1,33 @@
 package com.alerom.rng.archive.rng_archive_server.controllers.admin;
 
-import com.alerom.rng.archive.rng_archive_server.dto.request.create.CharacterBannerCreateDTO;
-import com.alerom.rng.archive.rng_archive_server.dto.request.update.CharacterBannerUpdateDTO;
-import com.alerom.rng.archive.rng_archive_server.dto.response.CharacterBannerResponseDTO;
+import com.alerom.rng.archive.rng_archive_server.dto.request.create.WeaponBannerCreateDTO;
+import com.alerom.rng.archive.rng_archive_server.dto.request.update.WeaponBannerUpdateDTO;
+import com.alerom.rng.archive.rng_archive_server.dto.response.WeaponBannerResponseDTO;
 import com.alerom.rng.archive.rng_archive_server.exceptions.*;
-import com.alerom.rng.archive.rng_archive_server.services.admin.AdminCharacterBannerService;
+import com.alerom.rng.archive.rng_archive_server.services.admin.AdminWeaponBannerService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 @RestController
-@RequestMapping("/api/admin/characterBanner")
-public class AdminCharacterBannerController {
+@RequestMapping("/api/admin/weaponBanner")
+public class AdminWeaponBannerController {
+    private final AdminWeaponBannerService adminWeaponBannerService;
 
-    private final AdminCharacterBannerService adminCharacterBannerService;
 
-    public AdminCharacterBannerController(AdminCharacterBannerService adminCharacterBannerService) {
-        this.adminCharacterBannerService = adminCharacterBannerService;
+    public AdminWeaponBannerController(AdminWeaponBannerService adminWeaponBannerService) {
+        this.adminWeaponBannerService = adminWeaponBannerService;
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createCharacterBanner (@Valid @RequestBody CharacterBannerCreateDTO characterBannerCreateDTO) {
+    public ResponseEntity<?> createWeaponBanner (@Valid @RequestBody WeaponBannerCreateDTO weaponBannerCreateDTO) {
         try {
-            CharacterBannerResponseDTO characterBannerResponseDTO = adminCharacterBannerService.createCharacterBanner(characterBannerCreateDTO);
+            WeaponBannerResponseDTO weaponBannerResponseDTO = adminWeaponBannerService.createWeaponBanner(weaponBannerCreateDTO);
 
-            return ResponseEntity.ok(characterBannerResponseDTO);
+            return ResponseEntity.ok(weaponBannerResponseDTO);
         } catch (BannerNotFoundException | UnitNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(e.getMessage());
@@ -41,9 +40,9 @@ public class AdminCharacterBannerController {
     @GetMapping()
     public ResponseEntity<?> listCharacterBanner() {
         try {
-            List<CharacterBannerResponseDTO> characterBannerResponseDTOS = adminCharacterBannerService.listCharacterBanner();
+            List<WeaponBannerResponseDTO> weaponBannerResponseDTOS = adminWeaponBannerService.listWeaponBanner();
 
-            return ResponseEntity.ok(characterBannerResponseDTOS);
+            return ResponseEntity.ok(weaponBannerResponseDTOS);
         } catch (LimitException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(e.getMessage());
@@ -51,11 +50,11 @@ public class AdminCharacterBannerController {
     }
 
     @PostMapping("/update/{id}")
-    public ResponseEntity<?> updateCharacterBanner(@PathVariable Long id, @Valid @RequestBody CharacterBannerUpdateDTO characterBannerUpdateDTO) {
+    public ResponseEntity<?> updateCharacterBanner(@PathVariable Long id, @Valid @RequestBody WeaponBannerUpdateDTO weaponBannerUpdateDTO) {
         try {
-            CharacterBannerResponseDTO characterBannerResponseDTO = adminCharacterBannerService.updateCharacterBanner(id, characterBannerUpdateDTO);
+            WeaponBannerResponseDTO weaponBannerResponseDTO = adminWeaponBannerService.updateWeaponBanner(id, weaponBannerUpdateDTO);
 
-            return ResponseEntity.ok(characterBannerResponseDTO);
+            return ResponseEntity.ok(weaponBannerResponseDTO);
         } catch (BannerNotFoundException | UnitNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(e.getMessage());
@@ -68,9 +67,9 @@ public class AdminCharacterBannerController {
     @PostMapping("/delete/{id}")
     public ResponseEntity<?> deleteCharacterBanner(@PathVariable Long id) {
         try {
-            CharacterBannerResponseDTO characterBannerResponseDTO = adminCharacterBannerService.deleteCharacterBanner(id);
+            WeaponBannerResponseDTO weaponBannerResponseDTO = adminWeaponBannerService.deleteWeaponBanner(id);
 
-            return ResponseEntity.ok(characterBannerResponseDTO);
+            return ResponseEntity.ok(weaponBannerResponseDTO);
         } catch (BannerNotFoundException | UnitNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(e.getMessage());
