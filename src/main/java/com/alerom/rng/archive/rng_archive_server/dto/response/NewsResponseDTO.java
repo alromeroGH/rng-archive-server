@@ -1,6 +1,7 @@
 package com.alerom.rng.archive.rng_archive_server.dto.response;
 
 import com.alerom.rng.archive.rng_archive_server.models.enums.NewsTypeEnum;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -23,6 +24,11 @@ public class NewsResponseDTO {
      * The type of the news item (e.g., EVENT, BANNER, CODE).
      */
     private NewsTypeEnum newsType;
+
+    /**
+     * The title of the news item.
+     */
+    private String title;
 
     /**
      * A brief description or summary of the news item.

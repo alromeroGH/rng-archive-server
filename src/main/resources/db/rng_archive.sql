@@ -12,11 +12,13 @@ CREATE TABLE rng_archive.users (
 CREATE TABLE rng_archive.news (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     new_type ENUM('event', 'banner', 'code') NOT NULL,
+    title VARCHAR(60) NOT NULL,
     description VARCHAR(150) NOT NULL,
     link VARCHAR(250),
     date_of_publication DATE DEFAULT (CURRENT_DATE()),
     is_deleted TINYINT DEFAULT 0
 );
+
 CREATE TABLE rng_archive.stats (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     stat_name VARCHAR(25) NOT NULL,
@@ -818,6 +820,7 @@ INSERT INTO rng_archive.banners_units (banner_id, unit_id, is_deleted) VALUES
 (12, 94, 0),
 (12, 6, 0),
 (12, 60, 0),
+
 (13, 186, 0),
 (13, 176, 0),
 (13, 156, 0),
@@ -835,7 +838,7 @@ INSERT INTO rng_archive.banners_units (banner_id, unit_id, is_deleted) VALUES
 (15, 204, 0),
 (15, 195, 0),
 (15, 152, 0),
-(15, 128, 0),
+(15, 129, 0),
 (15, 140, 0),
 (15, 145, 0),
 (15, 158, 0),
@@ -846,7 +849,6 @@ INSERT INTO rng_archive.banners_units (banner_id, unit_id, is_deleted) VALUES
 (16, 146, 0),
 (16, 154, 0),
 (16, 161, 0),
-
 (17, 209, 0),
 (17, 198, 0),
 (17, 131, 0),
@@ -854,7 +856,6 @@ INSERT INTO rng_archive.banners_units (banner_id, unit_id, is_deleted) VALUES
 (17, 144, 0),
 (17, 155, 0),
 (17, 159, 0),
-
 (18, 189, 0),
 (18, 201, 0),
 (18, 130, 0),
