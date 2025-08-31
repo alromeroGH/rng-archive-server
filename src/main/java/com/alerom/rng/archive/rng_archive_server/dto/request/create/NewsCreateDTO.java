@@ -22,6 +22,13 @@ public class NewsCreateDTO {
     private NewsTypeEnum newsType;
 
     /**
+     * The title of the news item.
+     * This field is required.
+     */
+    @NotBlank(message = "The title is required")
+    private String title;
+
+    /**
      * A brief description or summary of the news item.
      * This field is required.
      */

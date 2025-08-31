@@ -35,6 +35,11 @@ public class News {
     private NewsTypeEnum newsType;
 
     /**
+     * The title of the news item.
+     */
+    private String title;
+
+    /**
      * A brief description or summary of the news item.
      */
     private String description;

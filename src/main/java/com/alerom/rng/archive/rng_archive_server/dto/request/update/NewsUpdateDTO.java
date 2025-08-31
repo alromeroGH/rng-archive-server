@@ -23,6 +23,13 @@ public class NewsUpdateDTO {
     private NewsTypeEnum newsType;
 
     /**
+     * The title of the news item.
+     * This field is required.
+     */
+    @NotBlank(message = "The title is required")
+    private String title;
+
+    /**
      * The new brief description or summary of the news item.
      * This field is required.
      */
