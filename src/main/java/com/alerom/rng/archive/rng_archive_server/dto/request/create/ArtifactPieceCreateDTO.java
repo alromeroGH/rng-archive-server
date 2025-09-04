@@ -27,11 +27,4 @@ public class ArtifactPieceCreateDTO {
      */
     @NotBlank(message = "The piece name is required")
     private String pieceName;
-
-    /**
-     * The unique identifier of the artifact set to which this piece belongs.
-     * This field is required.
-     */
-    @NotNull(message = "The set id is required")
-    private Long setId;
 }

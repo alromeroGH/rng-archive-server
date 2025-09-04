@@ -15,6 +15,9 @@ import lombok.Setter;
 @Setter
 public class ArtifactPieceUpdateDTO {
 
+    @NotNull(message = "The id is required")
+    private Long id;
+
     /**
      * The new type of the artifact piece (e.g., FLOWER, FEATHER).
      */

@@ -31,6 +31,7 @@ public interface ArtifactSetMapper {
      * @param artifactSet The ArtifactSet entity to convert.
      * @return The corresponding ArtifactSetResponseDTO.
      */
+    @Mapping(target = "setImage", expression = "java(\"http://localhost:8080/images/images_artifacts/\" + artifactSet.getSetImage())")
     ArtifactSetResponseDTO toResponseDTO(ArtifactSet artifactSet);
 
     /**

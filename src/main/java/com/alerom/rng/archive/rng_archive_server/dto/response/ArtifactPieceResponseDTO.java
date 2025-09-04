@@ -26,9 +26,4 @@ public class ArtifactPieceResponseDTO {
      * The name of the artifact piece.
      */
     private String pieceName;
-
-    /**
-     * The unique identifier of the artifact set to which this piece belongs.
-     */
-    private Long setId;
 }
