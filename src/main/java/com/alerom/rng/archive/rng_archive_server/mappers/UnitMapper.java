@@ -32,7 +32,9 @@ public interface UnitMapper {
      * @param unit The Unit entity to convert.
      * @return The corresponding UnitResponseDTO.
      */
-    @Mapping(target = "unitImage", expression = "java(\"http://localhost:8080/images/images_characters/\" + unit.getUnitImage())")
+    @Mapping(target = "unitImage", expression = "java(unit.getUnitType() != null && unit.getUnitType().equals(UnitTypeEnum.WEAPON) ? " +
+            "\"http://localhost:8080/images/images_weapons/\" + unit.getUnitImage() : " +
+            "\"http://localhost:8080/images/images_characters/\" + unit.getUnitImage())")
     UnitResponseDTO toResponseDTO(Unit unit);
 
     /**

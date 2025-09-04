@@ -108,6 +108,10 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/admin/artifactSet").hasAnyRole("ADMIN", "USER")
                         .requestMatchers("/api/admin/artifactSet/update/{id}").hasAnyRole("ADMIN")
                         .requestMatchers("/api/admin/artifactSet/delete/{id}").hasAnyRole("ADMIN")
+                        .requestMatchers("/api/admin/unit/create").hasAnyRole("ADMIN")
+                        .requestMatchers("/api/admin/unit").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/api/admin/unit/update/{id}").hasAnyRole("ADMIN")
+                        .requestMatchers("/api/admin/unit/delete/{id}").hasAnyRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
