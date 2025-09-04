@@ -30,7 +30,7 @@ public class AdminNewsController {
         return ResponseEntity.ok(newsResponseDTO);
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<?> listNews() {
         List<NewsResponseDTO> newsResponseDTO = adminNewsService.listNews();
 

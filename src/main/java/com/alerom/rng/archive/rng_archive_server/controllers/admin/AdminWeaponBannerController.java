@@ -37,7 +37,7 @@ public class AdminWeaponBannerController {
         }
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<?> listCharacterBanner() {
         try {
             List<WeaponBannerResponseDTO> weaponBannerResponseDTOS = adminWeaponBannerService.listWeaponBanner();
