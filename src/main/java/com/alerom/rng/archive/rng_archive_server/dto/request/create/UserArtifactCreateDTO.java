@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 /**
  * DTO for creating a new user-owned artifact.
  * This object is used to transfer data from a client's request to the service layer,
@@ -12,6 +14,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserArtifactCreateDTO {
+
+    private Long userId;
 
     /**
      * The unique identifier of the main stat for the artifact.
@@ -26,4 +30,6 @@ public class UserArtifactCreateDTO {
      */
     @NotNull(message = "The artifact piece id is required")
     private Long artifactPieceId;
+
+    private List<Long> secondaryStatIds;
 }

@@ -20,10 +20,5 @@ public class SecondaryStatResponseDTO {
     /**
      * The unique identifier of the stat itself (e.g., ATK%, CRIT DMG).
      */
-    private Long statId;
-
-    /**
-     * The unique identifier of the user's artifact to which this stat belongs.
-     */
-    private Long userArtifactId;
+    private StatResponseDTO stat;
 }

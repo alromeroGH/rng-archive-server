@@ -7,9 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ArtifactPieceRepository extends JpaRepository<ArtifactPiece, Long> {
     @Modifying
     @Query("UPDATE ArtifactPiece ap SET ap.isDeleted = true WHERE ap = :artifactPiece")
     void softDelete(@Param("artifactPiece") ArtifactPiece artifactPiece);
+
+    @Query("SELECT ap FROM ArtifactPiece ap WHERE ap.id = :id AND ap.isDeleted = false")
+    Optional<ArtifactPiece> findArtifactPieceById(@Param("id") Long id);
 }
