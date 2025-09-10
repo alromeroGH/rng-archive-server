@@ -26,4 +26,6 @@ public class ArtifactPieceResponseDTO {
      * The name of the artifact piece.
      */
     private String pieceName;
+
+    private ArtifactSetResponseDTO artifactSet;
 }

@@ -31,8 +31,13 @@ public interface UserArtifactMapper {
      * @param userArtifact The UserArtifact entity to convert.
      * @return The corresponding UserArtifactResponseDTO.
      */
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "stat", target = "mainStat")
+    @Mapping(source = "artifactPiece", target = "artifactPiece")
+    @Mapping(source = "artifactPiece.artifactSet", target = "artifactPiece.artifactSet")
+    @Mapping(source = "secondaryStats", target = "secondaryStats")
+    @Mapping(target = "artifactPiece.artifactSet.setImage", expression = "java(\"http://localhost:8080/images/images_artifacts/\" + artifactSet.getSetImage())")
     UserArtifactResponseDTO toResponseDTO(UserArtifact userArtifact);
-
     /**
      * Updates an existing {@link UserArtifact} entity with data from a {@link UserArtifactUpdateDTO}.
      * The 'id' field is ignored during the update process.

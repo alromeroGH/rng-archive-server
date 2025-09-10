@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,11 +58,16 @@ public class UserArtifact {
      * A list of all secondary stats associated with this artifact.
      * This defines a one-to-many relationship with the SecondaryStats entity.
      */
-    @OneToMany(mappedBy = "userArtifact")
-    private List<SecondaryStat> secondaryStats;
+    @OneToMany(mappedBy = "userArtifact", cascade = CascadeType.ALL)
+    private List<SecondaryStat> secondaryStats = new ArrayList<>();
 
     /**
      * A boolean flag used for soft deletion, indicating if the artifact is logically deleted.
      */
     private Boolean isDeleted;
+
+    public void addSecondaryStat(SecondaryStat secondaryStat) {
+        secondaryStats.add(secondaryStat);
+        secondaryStat.setUserArtifact(this);
+    }
 }

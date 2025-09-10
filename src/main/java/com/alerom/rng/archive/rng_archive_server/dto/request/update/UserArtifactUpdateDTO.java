@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 /**
  * DTO for updating an existing user-owned artifact.
  * This object is used to transfer data from a client's request to the service layer,
@@ -14,16 +16,20 @@ import lombok.Setter;
 public class UserArtifactUpdateDTO {
 
     /**
-     * The new unique identifier of the main stat for the artifact.
+     * The unique identifier of the main stat for the artifact.
      * This field is required.
      */
     @NotNull(message = "The main stat id is required")
     private Long mainStatId;
 
     /**
-     * The new unique identifier of the artifact piece (e.g., Flower of Life).
+     * The unique identifier of the artifact piece (e.g., Flower of Life).
      * This field is required.
      */
     @NotNull(message = "The artifact piece id is required")
     private Long artifactPieceId;
+
+    private Long artifactSet;
+
+    private List<Long> secondaryStatIds;
 }
