@@ -24,6 +24,9 @@ public interface BannerRepository extends JpaRepository<Banner, Long> {
     @Query("SELECT b FROM Banner b JOIN b.bannersUnits bu WHERE b.id = :id AND b.bannerType = 'weapon' AND b.isDeleted = false AND bu.isDeleted = false")
     Optional<Banner> findWeaponBannersById(@Param("id") Long id);
 
+    @Query("SELECT b FROM Banner b WHERE b.id = :id AND b.isDeleted = false")
+    Optional<Banner> findBannerById(@Param("id") Long id);
+
     @Modifying
     @Query("UPDATE Banner b SET b.isDeleted = true WHERE b = :banner")
     void softDeleteBanner(@Param("banner") Banner banner);

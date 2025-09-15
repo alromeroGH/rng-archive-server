@@ -34,10 +34,12 @@ public class PullResponseDTO {
     /**
      * The unique identifier of the user who performed the pull.
      */
-    private Long userId;
+    private UserResponseDTO userResponseDTO;
 
     /**
      * The unique identifier of the banner on which the pull was performed.
      */
-    private Long bannerId;
+    private BannerResponseDTO bannerResponseDTO;
+
+    private UnitResponseDTO unitResponseDTO;
 }

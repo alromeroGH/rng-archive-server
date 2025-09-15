@@ -97,6 +97,10 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/userArtifact").hasAnyRole("ADMIN", "USER")
                         .requestMatchers("/api/userArtifact/update/{id}").hasAnyRole("ADMIN", "USER")
                         .requestMatchers("/api/userArtifact/delete/{id}").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/api/pull/create").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/api/pull").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/api/pull/update/{id}").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/api/pull/delete/{id}").hasAnyRole("ADMIN", "USER")
 
                         .requestMatchers("/api/admin/characterBanner/create").hasRole("ADMIN")
                         .requestMatchers("/api/admin/characterBanner").hasAnyRole("ADMIN", "USER")

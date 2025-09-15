@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -72,11 +73,25 @@ public class Pull {
      * A list of units obtained in this pull event.
      * This defines a one-to-many relationship with the PullsUnits entity.
      */
-    @OneToMany(mappedBy = "pull")
-    private List<PullUnit> pullsUnits;
+    @OneToMany(mappedBy = "pull", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PullUnit> pullsUnits = new ArrayList<>();
 
     /**
      * A boolean flag used for soft deletion, indicating if the pull record is logically deleted.
      */
     private Boolean isDeleted;
+
+    public void addPullUnit(Unit unit) {
+        if (this.pullsUnits != null && !this.pullsUnits.isEmpty()) {
+            this.pullsUnits.clear();
+        }
+
+        PullUnit pullUnit = new PullUnit();
+
+        pullUnit.setUnit(unit);
+        pullUnit.setPull(this);
+        pullUnit.setIsDeleted(false);
+
+        pullsUnits.add(pullUnit);
+    }
 }
