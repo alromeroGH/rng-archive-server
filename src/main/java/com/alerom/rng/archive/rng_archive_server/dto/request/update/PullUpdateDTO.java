@@ -40,4 +40,6 @@ public class PullUpdateDTO {
      */
     @NotNull(message = "The banner id is required")
     private Long bannerId;
+
+    private Long unitId;
 }
