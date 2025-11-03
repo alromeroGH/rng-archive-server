@@ -88,6 +88,7 @@ public class SecurityConfiguration {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/summon-simulator/**").permitAll()
                         .requestMatchers("/images/**").permitAll()
 
                         .requestMatchers("/api/user/{id}").hasAnyRole("ADMIN", "USER")

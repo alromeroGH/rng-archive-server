@@ -29,6 +29,16 @@ public interface PullRepository extends JpaRepository<Pull, Long> {
             "AND p.isDeleted = false")
     Optional<Pull> findPullById(@Param("id") Long id);
 
+//    @Query("SELECT p FROM Pull p " +
+//            "INNER JOIN FETCH p.user " +
+//            "INNER JOIN FETCH p.banner " +
+//            "INNER JOIN FETCH p.pullsUnits pu " +
+//            "INNER JOIN FETCH pu.unit " +
+//            "WHERE u.id = :userId " +
+//            "AND u.isDeleted = false " +
+//            "AND p.isDeleted = false")
+//    List<Pull> findUserPulls(@Param("id") Long userId);
+
     @Modifying
     @Query("UPDATE Pull p SET p.isDeleted = true WHERE p = :pull")
     void softDeletePull(@Param("pull") Pull pull);
