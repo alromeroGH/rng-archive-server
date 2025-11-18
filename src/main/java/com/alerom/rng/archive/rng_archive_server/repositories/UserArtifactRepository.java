@@ -1,6 +1,5 @@
 package com.alerom.rng.archive.rng_archive_server.repositories;
 
-import com.alerom.rng.archive.rng_archive_server.dto.response.UserArtifactResponseDTO;
 import com.alerom.rng.archive.rng_archive_server.models.UserArtifact;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -29,4 +28,19 @@ public interface UserArtifactRepository extends JpaRepository<UserArtifact, Long
     @Modifying
     @Query("UPDATE UserArtifact ua SET ua.isDeleted = true WHERE ua = :userArtifact")
     void softDeleteUserArtifact(@Param("userArtifact") UserArtifact userArtifact);
+
+    @Query("SELECT ua FROM UserArtifact ua " +
+            "JOIN FETCH ua.artifactPiece ap " +
+            "JOIN FETCH ap.artifactSet ar " +
+            "WHERE ua.user.id = :userId " +
+            "AND ar.id = :setId " +
+            "AND ar.isDeleted = false")
+    List<UserArtifact> findArtifactsByUserAndSet(@Param("userId") Long userId, @Param("setId") Long setId);
+
+    @Query("SELECT ua FROM UserArtifact ua " +
+            "JOIN FETCH ua.artifactPiece ap " +
+            "WHERE ua.user.id = :userId " +
+            "AND ap.id = :artifactPieceId " +
+            "AND ap.isDeleted = false")
+    List<UserArtifact> findArtifactsByUserAndPiece(@Param("userId") Long userId, @Param("artifactPieceId") Long artifactPieceId);
 }

@@ -123,6 +123,9 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/admin/unit").hasAnyRole("ADMIN", "USER")
                         .requestMatchers("/api/admin/unit/update/{id}").hasRole("ADMIN")
                         .requestMatchers("/api/admin/unit/delete/{id}").hasRole("ADMIN")
+
+                        .requestMatchers("/api/statistics/artifact").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/api/statistics/pull").hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
