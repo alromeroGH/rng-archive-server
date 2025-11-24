@@ -8,6 +8,7 @@ import com.alerom.rng.archive.rng_archive_server.mappers.NewsMapper;
 import com.alerom.rng.archive.rng_archive_server.models.News;
 import com.alerom.rng.archive.rng_archive_server.repositories.NewsRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,7 @@ public class AdminNewsService {
         this.newsMapper = newsMapper;
     }
 
+    @Transactional
     public NewsResponseDTO createNews(NewsCreateDTO newsCreateDTO) {
         News news = new News();
 
@@ -41,6 +43,7 @@ public class AdminNewsService {
         return newsRepository.getAllNews();
     }
 
+    @Transactional
     public NewsResponseDTO updateNews (Long newsId, NewsUpdateDTO newsUpdateDTO) {
        News news = newsRepository.findNew(newsId).orElseThrow(
                () -> new NewsNotFoundException("News not found")
@@ -56,6 +59,7 @@ public class AdminNewsService {
         return newsMapper.toResponseDTO(news);
     }
 
+    @Transactional
     public NewsResponseDTO deleteNews(Long newsId) {
         News news = newsRepository.findNew(newsId).orElseThrow(
                 () -> new NewsNotFoundException("News not found")

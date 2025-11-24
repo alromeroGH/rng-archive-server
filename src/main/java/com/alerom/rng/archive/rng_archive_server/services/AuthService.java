@@ -67,7 +67,7 @@ public class AuthService {
         Authentication authentication = authenticationManager.authenticate(authToken);
         JwtUserDetails user = (JwtUserDetails) authentication.getPrincipal();
         String jwt = jwtUtil.generateToken(authentication);
-        return new JwtResponse(jwt, user.user().getId(), user.user().getUserName());
+        return new JwtResponse(jwt, user.user().getId(), user.user().getUserName(), user.user().getIsAdmin());
     }
 
     /**

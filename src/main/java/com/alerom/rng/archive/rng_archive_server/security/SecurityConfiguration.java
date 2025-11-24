@@ -3,6 +3,7 @@ package com.alerom.rng.archive.rng_archive_server.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -82,14 +83,15 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/summon-simulator/**").permitAll()
                         .requestMatchers("/images/**").permitAll()
+                        .requestMatchers("/api/summon-simulator/**").permitAll()
 
                         .requestMatchers("/api/user/{id}").hasAnyRole("ADMIN", "USER")
                         .requestMatchers("/api/user/update/{id}").hasAnyRole("ADMIN", "USER")
