@@ -28,4 +28,9 @@ public class JwtResponse {
      * The username of the authenticated user.
      */
     private String userName;
+
+    /**
+     * The rol of the authenticated user.
+     */
+    private boolean isAdmin;
 }

@@ -8,7 +8,6 @@ import com.alerom.rng.archive.rng_archive_server.services.admin.AdminNewsService
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +21,6 @@ public class AdminNewsController {
         this.adminNewsService = adminNewsService;
     }
 
-    @Transactional
     @PostMapping("/create")
     public ResponseEntity<?> createNews(@Valid @RequestBody NewsCreateDTO newsCreateDTO){
         NewsResponseDTO newsResponseDTO = adminNewsService.createNews(newsCreateDTO);
@@ -37,7 +35,6 @@ public class AdminNewsController {
         return ResponseEntity.ok(newsResponseDTO);
     }
 
-    @Transactional
     @PostMapping("/update/{id}")
     public ResponseEntity<?> updateNews(@PathVariable Long id, @Valid @RequestBody NewsUpdateDTO newsUpdateDTO) {
         try {
@@ -50,7 +47,6 @@ public class AdminNewsController {
         }
     }
 
-    @Transactional
     @PostMapping("/delete/{id}")
     public ResponseEntity<?> deleteNews(@PathVariable Long id) {
         try {
