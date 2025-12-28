@@ -17,6 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Service class for administrative management of Units (Characters and Weapons).
+ * Handles the logic for creating, listing, updating, and soft-deleting units,
+ * including image persistence in type-specific directories.
+ *
+ * @author Alejo Romero
+ * @version 1.0
+ */
 @Service
 public class AdminUnitService {
     @Value("${app.character-image-upload-dir:src/main/resources/images/images_characters/}")
@@ -28,11 +36,24 @@ public class AdminUnitService {
     private final UnitRepository unitRepository;
     private final UnitMapper unitMapper;
 
+    /**
+     * Constructs the AdminUnitService with the required dependencies.
+     *
+     * @param unitRepository Repository for unit data access.
+     * @param unitMapper Mapper for converting unit entities to DTOs.
+     */
     public AdminUnitService(UnitRepository unitRepository, UnitMapper unitMapper) {
         this.unitRepository = unitRepository;
         this.unitMapper = unitMapper;
     }
 
+    /**
+     * Creates a new unit (Character or Weapon) and saves its associated image.
+     *
+     * @param unitCreateDTO DTO containing unit details and Base64 image data.
+     * @return A DTO of the created unit.
+     * @throws InvalidImageException if the image fails to save to the filesystem.
+     */
     @Transactional
     public UnitResponseDTO createUnit(UnitCreateDTO unitCreateDTO) {
         Unit unit = new Unit();
@@ -66,12 +87,26 @@ public class AdminUnitService {
         return unitMapper.toResponseDTO(unit);
     }
 
+    /**
+     * Retrieves a list of all units that are not logically deleted.
+     *
+     * @return A list of UnitResponseDTOs.
+     */
     public List<UnitResponseDTO> listUnits() {
         List<Unit> units = unitRepository.getAllUnits();
 
         return units.stream().map(unitMapper::toResponseDTO).toList();
     }
 
+    /**
+     * Updates an existing unit's information, including conditional image replacement.
+     *
+     * @param unitId The ID of the unit to update.
+     * @param unitUpdateDTO DTO containing the updated unit information.
+     * @return A DTO of the updated unit.
+     * @throws UnitNotFoundException if the unit with the specified ID does not exist.
+     * @throws InvalidImageException if a new image is provided but fails to save.
+     */
     @Transactional
     public UnitResponseDTO updateUnit(Long unitId, UnitUpdateDTO unitUpdateDTO) {
         Unit unit = unitRepository.findUnit(unitId).orElseThrow(() ->
@@ -109,11 +144,16 @@ public class AdminUnitService {
 
         unit.setUnitImage(unitImage);
 
-        unit.setUnitImage(unitUpdateDTO.getUnitImage());
-
         return unitMapper.toResponseDTO(unit);
     }
 
+    /**
+     * Performs a soft delete on a unit by updating its status.
+     *
+     * @param unitId The ID of the unit to delete.
+     * @return A DTO of the deleted unit.
+     * @throws UnitNotFoundException if the unit does not exist.
+     */
     @Transactional
     public UnitResponseDTO deleteUnit(Long unitId) {
         Unit unit = unitRepository.findUnit(unitId).orElseThrow(() ->

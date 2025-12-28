@@ -8,8 +8,22 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Repository interface for SecondaryStat data.
+ * Extends JpaRepository to provide standard CRUD operations for the sub-stats
+ * associated with a user's artifact.
+ *
+ * @author Alejo Romero
+ * @version 1.0
+ */
 @Repository
 public interface SecondaryStatRepository extends JpaRepository<SecondaryStat, Long> {
+
+    /**
+     * Performs a soft delete on a secondary stat by setting its isDeleted flag to true.
+     *
+     * @param secondaryStat The SecondaryStat entity to be logically deleted.
+     */
     @Modifying
     @Query("UPDATE SecondaryStat ss SET ss.isDeleted = true WHERE ss = :secondaryStat")
     void softDeleteSecondaryStat(@Param("secondaryStat") SecondaryStat secondaryStat);

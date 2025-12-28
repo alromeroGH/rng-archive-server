@@ -16,18 +16,43 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service class for simulating the gacha (summon) system logic.
+ * It emulates probability rates, pity systems, soft pity, and specific mechanics
+ * like "Capturing Radiance" and "Divine Path" for character and weapon banners.
+ *
+ * @author Alejo Romero
+ * @version 1.0
+ */
 @Service
 public class SummonSimulatorService {
     private final UnitRepository unitRepository;
     private final BannerRepository bannerRepository;
     private final UnitMapper unitMapper;
 
+    /**
+     * Constructs the SummonSimulatorService with the required repositories and mapper.
+     *
+     * @param unitRepository Repository for accessing unit data.
+     * @param bannerRepository Repository for accessing banner configurations.
+     * @param unitMapper Mapper to convert unit entities to response DTOs.
+     */
     public SummonSimulatorService(UnitRepository unitRepository, BannerRepository bannerRepository, UnitMapper unitMapper) {
         this.unitRepository = unitRepository;
         this.bannerRepository = bannerRepository;
         this.unitMapper = unitMapper;
     }
 
+    /**
+     * Simulates a summon event for a limited character banner.
+     * Implements soft pity starting at 74 pulls, the 50/50 mechanic,
+     * and the Capturing Radiance system.
+     *
+     * @param summonCharacterEventCreateDTO DTO containing current pity status and summon amount.
+     * @return A DTO containing the units obtained and the updated pity/currency state.
+     * @throws BannerNotFoundException if the specified banner ID does not exist.
+     * @throws UnitNotFoundException if required units (limited, standard, or 4-star) are missing from the database.
+     */
     public SummonCharacterEventResponseDTO generalCharacterEventSummon(SummonCharacterEventCreateDTO summonCharacterEventCreateDTO) {
         Banner banner = bannerRepository.findBannerById(summonCharacterEventCreateDTO.getBannerId()).orElseThrow(
                 () -> new BannerNotFoundException("Banner with id " + summonCharacterEventCreateDTO.getBannerId() + " not found")
@@ -179,10 +204,21 @@ public class SummonSimulatorService {
                 primoCount,
                 winFiftyFiftyCount,
                 winCapturingRadianceCount,
+                lostFiftyFifty,
                 winFourStarCount
         );
     }
 
+    /**
+     * Simulates a summon event for a weapon event banner.
+     * Implements weapon-specific soft pity (starting at 63), the 75/25 weapon rate,
+     * and the "Divine Path" (Epitomized Path) mechanic.
+     *
+     * @param summonWeaponEventCreateDTO DTO containing current pity, selected weapon, and divine path count.
+     * @return A DTO containing the units obtained and the updated weapon banner state.
+     * @throws BannerNotFoundException if the banner ID is invalid.
+     * @throws UnitNotFoundException if the selected weapon or required weapon pools are not found.
+     */
     public SummonWeaponEventResponseDTO generalWeaponEventSummon(SummonWeaponEventCreateDTO summonWeaponEventCreateDTO) {
         Banner banner = bannerRepository.findBannerById(summonWeaponEventCreateDTO.getBannerId()).orElseThrow(
                 () -> new BannerNotFoundException("Banner with id " + summonWeaponEventCreateDTO.getBannerId() + " not found")

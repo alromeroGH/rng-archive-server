@@ -12,15 +12,32 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controller class for administrative management of news.
+ * It provides restricted endpoints to create, list, update, and delete news articles or announcements.
+ *
+ * @author Alejo Romero
+ * @version 1.0
+ */
 @RestController
 @RequestMapping("/api/admin/news")
 public class AdminNewsController {
     private final AdminNewsService adminNewsService;
 
+    /**
+     * Constructs the AdminNewsController with the necessary service.
+     * @param adminNewsService The service for administrative news operations.
+     */
     public AdminNewsController(AdminNewsService adminNewsService) {
         this.adminNewsService = adminNewsService;
     }
 
+    /**
+     * Creates a new news entry.
+     *
+     * @param newsCreateDTO The DTO containing the details for the new news article.
+     * @return A ResponseEntity containing the created news data.
+     */
     @PostMapping("/create")
     public ResponseEntity<?> createNews(@Valid @RequestBody NewsCreateDTO newsCreateDTO){
         NewsResponseDTO newsResponseDTO = adminNewsService.createNews(newsCreateDTO);
@@ -28,6 +45,11 @@ public class AdminNewsController {
         return ResponseEntity.ok(newsResponseDTO);
     }
 
+    /**
+     * Retrieves a list of all news entries in the system.
+     *
+     * @return A ResponseEntity containing a list of news response DTOs.
+     */
     @GetMapping
     public ResponseEntity<?> listNews() {
         List<NewsResponseDTO> newsResponseDTO = adminNewsService.listNews();
@@ -35,6 +57,13 @@ public class AdminNewsController {
         return ResponseEntity.ok(newsResponseDTO);
     }
 
+    /**
+     * Updates an existing news entry by its unique ID.
+     *
+     * @param id The ID of the news to update.
+     * @param newsUpdateDTO The DTO containing the updated news information.
+     * @return A ResponseEntity containing the updated news data or an error message if the news entry is not found.
+     */
     @PostMapping("/update/{id}")
     public ResponseEntity<?> updateNews(@PathVariable Long id, @Valid @RequestBody NewsUpdateDTO newsUpdateDTO) {
         try {
@@ -47,6 +76,12 @@ public class AdminNewsController {
         }
     }
 
+    /**
+     * Deletes a news entry from the system by its unique ID.
+     *
+     * @param id The ID of the news to delete.
+     * @return A ResponseEntity containing the deleted news data or an error message if the news entry is not found.
+     */
     @PostMapping("/delete/{id}")
     public ResponseEntity<?> deleteNews(@PathVariable Long id) {
         try {

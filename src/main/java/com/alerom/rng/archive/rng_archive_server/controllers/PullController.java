@@ -15,15 +15,32 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controller class for managing pull (summon) records.
+ * It provides endpoints to create, retrieve, update, and delete individual pull entries.
+ *
+ * @author Alejo Romero
+ * @version 1.0
+ */
 @RestController
 @RequestMapping("/api/pull")
 public class PullController {
     private final PullService pullService;
 
+    /**
+     * Constructs the PullController with the necessary service.
+     * @param pullService The service for pull data management.
+     */
     public PullController(PullService pullService) {
         this.pullService = pullService;
     }
 
+    /**
+     * Registers a new pull entry in the system.
+     *
+     * @param pullCreateDTO The DTO containing the pull details to be created.
+     * @return A ResponseEntity containing the created pull data or an error message if the user, banner, or unit is not found.
+     */
     @PostMapping("/create")
     public ResponseEntity<?> createPull(@Valid @RequestBody PullCreateDTO pullCreateDTO) {
         try {
@@ -36,6 +53,11 @@ public class PullController {
         }
     }
 
+    /**
+     * Retrieves a list of all pulls recorded in the system.
+     *
+     * @return A ResponseEntity containing a list of pull response DTOs.
+     */
     @GetMapping
     public ResponseEntity<?> listPulls() {
         List<PullResponseDTO> pullResponseDTOS = pullService.listPulls();
@@ -43,6 +65,13 @@ public class PullController {
         return ResponseEntity.ok(pullResponseDTOS);
     }
 
+    /**
+     * Updates an existing pull record by its unique ID.
+     *
+     * @param id The ID of the pull to update.
+     * @param pullUpdateDTO The DTO containing the updated pull information.
+     * @return A ResponseEntity containing the updated pull data or an error message if the pull or related entities are not found.
+     */
     @PostMapping("/update/{id}")
     public ResponseEntity<?> updatePull(@PathVariable Long id, @Valid @RequestBody PullUpdateDTO pullUpdateDTO) {
         try {
@@ -55,6 +84,13 @@ public class PullController {
         }
     }
 
+
+    /**
+     * Deletes a specific pull record by its unique ID.
+     *
+     * @param id The ID of the pull to delete.
+     * @return A ResponseEntity containing the deleted pull data or an error message if the pull is not found.
+     */
     @PostMapping("/delete/{id}")
     public ResponseEntity<?> deletePull(@PathVariable Long id) {
         try {
