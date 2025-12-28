@@ -22,6 +22,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service class for administrative management of artifact sets and pieces.
+ * Handles the logic for creating complete sets, listing them with their active pieces,
+ * updating set information, and performing soft deletions across the set hierarchy.
+ *
+ * @author Alejo Romero
+ * @version 1.0
+ */
 @Service
 public class AdminArtifactSetService {
     @Value("${app.artifact-image-upload-dir:src/main/resources/images/images_artifacts/}")
@@ -32,6 +40,14 @@ public class AdminArtifactSetService {
     private final ArtifactSetMapper artifactSetMapper;
     private final ArtifactPieceMapper artifactPieceMapper;
 
+    /**
+     * Constructs the AdminArtifactSetService with the required dependencies.
+     *
+     * @param artifactSetRepository Repository for artifact set data.
+     * @param artifactPieceRepository Repository for artifact piece data.
+     * @param artifactSetMapper Mapper for artifact set entity conversion.
+     * @param artifactPieceMapper Mapper for artifact piece entity conversion.
+     */
     public AdminArtifactSetService(ArtifactSetRepository artifactSetRepository, ArtifactPieceRepository artifactPieceRepository, ArtifactSetMapper artifactSetMapper, ArtifactPieceMapper artifactPieceMapper) {
         this.artifactSetRepository = artifactSetRepository;
         this.artifactPieceRepository = artifactPieceRepository;
@@ -39,6 +55,14 @@ public class AdminArtifactSetService {
         this.artifactPieceMapper = artifactPieceMapper;
     }
 
+    /**
+     * Creates a new artifact set along with its mandatory five pieces.
+     *
+     * @param artifactCreateDTO DTO containing the set information and the list of pieces to create.
+     * @return A DTO representing the created set and its pieces.
+     * @throws InvalidImageException if the set image fails to save.
+     * @throws LimitException if the number of pieces provided is not exactly five.
+     */
     @Transactional
     public ArtifactResponseDTO createArtifactSet(ArtifactCreateDTO artifactCreateDTO) {
         ArtifactSet artifactSet = artifactSetMapper
@@ -79,6 +103,11 @@ public class AdminArtifactSetService {
         );
     }
 
+    /**
+     * Retrieves all active artifact sets and their associated active pieces.
+     *
+     * @return A list of DTOs containing artifact set and piece information.
+     */
     public List<ArtifactResponseDTO> listArtifactSets() {
         List<ArtifactSet> artifactSets = artifactSetRepository.findAllArtifacts();
 
@@ -99,6 +128,16 @@ public class AdminArtifactSetService {
         return artifacts;
     }
 
+    /**
+     * Updates an existing artifact set's details and its associated pieces.
+     *
+     * @param artifactId The unique identifier of the artifact set to update.
+     * @param artifactUpdateDTO DTO containing the updated fields for the set and its pieces.
+     * @return A DTO of the updated artifact set.
+     * @throws ArtifactNotFoundException if the set or any specified piece ID does not exist.
+     * @throws InvalidImageException if a new image is provided but fails to save.
+     * @throws LimitException if the updated pieces list does not contain exactly five items.
+     */
     @Transactional
     public ArtifactResponseDTO updateArtifactSet(Long artifactId, ArtifactUpdateDTO artifactUpdateDTO) {
         ArtifactSet artifactSet = artifactSetRepository.findByArtifactId(artifactId).orElseThrow(
@@ -152,6 +191,13 @@ public class AdminArtifactSetService {
         );
     }
 
+    /**
+     * Performs a soft delete on an artifact set and all its related pieces.
+     *
+     * @param artifactId The unique identifier of the artifact set to delete.
+     * @return A DTO of the deleted artifact set and its pieces.
+     * @throws ArtifactNotFoundException if the artifact set is not found.
+     */
     @Transactional
     public ArtifactResponseDTO deleteArtifactSet(Long artifactId) {
         ArtifactSet artifactSet = artifactSetRepository.findByArtifactId(artifactId).orElseThrow(

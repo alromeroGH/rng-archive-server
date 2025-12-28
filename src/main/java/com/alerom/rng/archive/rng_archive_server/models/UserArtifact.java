@@ -66,6 +66,10 @@ public class UserArtifact {
      */
     private Boolean isDeleted;
 
+    /**
+     * Adds a secondary stat to the artifact and maintains the bidirectional relationship.
+     * @param secondaryStat The secondary stat entity to be associated with this artifact.
+     */
     public void addSecondaryStat(SecondaryStat secondaryStat) {
         secondaryStats.add(secondaryStat);
         secondaryStat.setUserArtifact(this);

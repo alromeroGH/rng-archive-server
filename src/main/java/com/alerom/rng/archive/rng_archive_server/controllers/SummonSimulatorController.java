@@ -12,15 +12,32 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller class for managing summon simulation operations.
+ * It provides endpoints to simulate character and weapon summons based on specific events.
+ *
+ * @author Alejo Romero
+ * @version 1.0
+ */
 @RestController
 @RequestMapping("/api/summon-simulator")
 public class SummonSimulatorController {
     private final SummonSimulatorService summonSimulatorService;
 
+    /**
+     * Constructs the SummonSimulatorController with the necessary service.
+     * @param summonSimulatorService The service for handling summon simulation logic.
+     */
     public SummonSimulatorController(SummonSimulatorService summonSimulatorService) {
         this.summonSimulatorService = summonSimulatorService;
     }
 
+    /**
+     * Simulates a summon on a character event banner.
+     *
+     * @param summonCharacterEventCreateDTO The DTO containing the character summon parameters.
+     * @return A ResponseEntity containing the result of the character summon or an error message if the banner or units are not found.
+     */
     @PostMapping("/character")
     public ResponseEntity<?> generalCharacterEventSummon(@Valid @RequestBody SummonCharacterEventCreateDTO summonCharacterEventCreateDTO) {
         try {
@@ -33,6 +50,12 @@ public class SummonSimulatorController {
         }
     }
 
+    /**
+     * Simulates a summon on a weapon event banner.
+     *
+     * @param summonWeaponEventCreateDTO The DTO containing the weapon summon parameters.
+     * @return A ResponseEntity containing the result of the weapon summon or an error message if the banner or units are not found.
+     */
     @PostMapping("/weapon")
     public ResponseEntity<?> generalWeaponEventSummon(@Valid @RequestBody SummonWeaponEventCreateDTO summonWeaponEventCreateDTO) {
         try {

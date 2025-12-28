@@ -81,6 +81,13 @@ public class Pull {
      */
     private Boolean isDeleted;
 
+    /**
+     * Associates a specific unit with this pull event.
+     * It clears any existing units in the pull to ensure only the obtained unit is recorded,
+     * establishing the link between the pull and the unit through a PullUnit entity.
+     *
+     * @param unit The unit obtained during the pull.
+     */
     public void addPullUnit(Unit unit) {
         if (this.pullsUnits != null && !this.pullsUnits.isEmpty()) {
             this.pullsUnits.clear();

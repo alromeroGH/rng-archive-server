@@ -20,6 +20,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Service class for managing pull (summon) records logic.
+ * Handles the persistent storage, retrieval, modification, and soft deletion
+ * of pull events performed by users.
+ *
+ * @author Alejo Romero
+ * @version 1.0
+ */
 @Service
 public class PullService {
     private final PullRepository pullRepository;
@@ -27,23 +35,42 @@ public class PullService {
     private final BannerRepository bannerRepository;
     private final UnitRepository unitRepository;
     private final PullUnitRepository pullUnitRepository;
-    private final PullMapper pullMapper;
     private final UserMapper userMapper;
     private final BannerMapper bannerMapper;
     private final UnitMapper unitMapper;
 
-    public PullService(PullRepository pullRepository, UserRepository userRepository, BannerRepository bannerRepository, UnitRepository unitRepository, PullUnitRepository pullUnitRepository, PullMapper pullMapper, UserMapper userMapper, BannerMapper bannerMapper, UnitMapper unitMapper) {
+    /**
+     * Constructs the PullService with the required repositories and mappers.
+     *
+     * @param pullRepository Repository for pull data.
+     * @param userRepository Repository for user data.
+     * @param bannerRepository Repository for banner data.
+     * @param unitRepository Repository for unit data.
+     * @param pullUnitRepository Repository for the relationship between pulls and units.
+     * @param userMapper Mapper for user entity conversion.
+     * @param bannerMapper Mapper for banner entity conversion.
+     * @param unitMapper Mapper for unit entity conversion.
+     */
+    public PullService(PullRepository pullRepository, UserRepository userRepository, BannerRepository bannerRepository, UnitRepository unitRepository, PullUnitRepository pullUnitRepository, UserMapper userMapper, BannerMapper bannerMapper, UnitMapper unitMapper) {
         this.pullRepository = pullRepository;
         this.userRepository = userRepository;
         this.bannerRepository = bannerRepository;
         this.unitRepository = unitRepository;
         this.pullUnitRepository = pullUnitRepository;
-        this.pullMapper = pullMapper;
         this.userMapper = userMapper;
         this.bannerMapper = bannerMapper;
         this.unitMapper = unitMapper;
     }
 
+    /**
+     * Records a new pull event in the database.
+     *
+     * @param pullCreateDTO DTO containing the user ID, banner ID, unit obtained, and pull details.
+     * @return A DTO representing the newly created pull record.
+     * @throws UserNotFoundException if the user is not found.
+     * @throws BannerNotFoundException if the banner is not found.
+     * @throws UnitNotFoundException if the unit is not found.
+     */
     @Transactional
     public PullResponseDTO createPull(PullCreateDTO pullCreateDTO) {
         User user = userRepository.findById(pullCreateDTO.getUserId()).orElseThrow(
@@ -83,6 +110,11 @@ public class PullService {
         );
     }
 
+    /**
+     * Retrieves all active pull records from the database.
+     *
+     * @return A list of DTOs containing the details of all pulls and their associated entities.
+     */
     public List<PullResponseDTO> listPulls() {
         List<Pull> pulls = pullRepository.findAllPulls();
 
@@ -112,6 +144,17 @@ public class PullService {
         return pullResponseDTOS;
     }
 
+    /**
+     * Updates an existing pull record with new information.
+     *
+     * @param pullId The ID of the pull record to update.
+     * @param pullUpdateDTO DTO containing the updated pull data.
+     * @return A DTO representing the updated pull record.
+     * @throws PullNotFoundException if the pull record is not found.
+     * @throws UserNotFoundException if the user associated with the pull is not found.
+     * @throws BannerNotFoundException if the updated banner ID is invalid.
+     * @throws UnitNotFoundException if the updated unit ID is invalid.
+     */
     @Transactional
     public PullResponseDTO updatePull(Long pullId, PullUpdateDTO pullUpdateDTO) {
         Pull pull = pullRepository.findPullById(pullId).orElseThrow(
@@ -151,6 +194,13 @@ public class PullService {
         );
     }
 
+    /**
+     * Performs a soft delete on a pull record and its associated unit relationship.
+     *
+     * @param pullId The ID of the pull record to delete.
+     * @return A DTO representing the pull record that was deleted.
+     * @throws PullNotFoundException if the pull record is not found.
+     */
     @Transactional
     public PullResponseDTO deletePull(Long pullId) {
         Pull pull = pullRepository.findPullById(pullId).orElseThrow(

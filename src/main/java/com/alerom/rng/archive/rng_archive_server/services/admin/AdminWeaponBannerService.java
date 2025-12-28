@@ -22,6 +22,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service class for administrative management of weapon banners.
+ * Handles the logic for creating, updating, listing, and deleting weapon banners,
+ * including validation of weapon counts and rarities.
+ *
+ * @author Alejo Romero
+ * @version 1.0
+ */
 @Service
 public class AdminWeaponBannerService {
     @Value("${app.banner-image-upload-dir:src/main/resources/images/images_banners/}")
@@ -32,6 +40,14 @@ public class AdminWeaponBannerService {
     private final UnitRepository unitRepository;
     private final UnitMapper unitMapper;
 
+    /**
+     * Constructs the AdminWeaponBannerService with the required dependencies.
+     *
+     * @param bannerRepository Repository for banner data access.
+     * @param bannerUnitRepository Repository for banner-unit relationship data.
+     * @param unitRepository Repository for unit data access.
+     * @param unitMapper Mapper for converting unit entities to DTOs.
+     */
     public AdminWeaponBannerService(BannerRepository bannerRepository, BannerUnitRepository bannerUnitRepository, UnitRepository unitRepository, UnitMapper unitMapper) {
         this.bannerRepository = bannerRepository;
         this.bannerUnitRepository = bannerUnitRepository;
@@ -39,6 +55,15 @@ public class AdminWeaponBannerService {
         this.unitMapper = unitMapper;
     }
 
+    /**
+     * Creates a new weapon banner with a specific set of 5-star and 4-star weapons.
+     *
+     * @param weaponBannerCreateDTO DTO containing banner details and weapon IDs.
+     * @return A DTO of the created weapon banner.
+     * @throws LimitException if the number of 5-star or 4-star weapons is invalid.
+     * @throws InvalidImageException if the banner image fails to save.
+     * @throws InvalidUnitException if the weapons do not match the required rarity.
+     */
     @Transactional
     public WeaponBannerResponseDTO createWeaponBanner(WeaponBannerCreateDTO weaponBannerCreateDTO) {
         List<Unit> fiveStarWeapons = (List<Unit>) unitRepository.findAllById(weaponBannerCreateDTO.getFiveStarWeaponIds());
@@ -111,6 +136,11 @@ public class AdminWeaponBannerService {
         );
     }
 
+    /**
+     * Retrieves a list of all active weapon banners.
+     *
+     * @return A list of DTOs containing weapon banner information.
+     */
     public List<WeaponBannerResponseDTO> listWeaponBanner() {
         List<Banner> banners = bannerRepository.findWeaponBanners();
 
@@ -140,6 +170,16 @@ public class AdminWeaponBannerService {
         return weaponBanners;
     }
 
+    /**
+     * Updates an existing weapon banner's information and associated weapons.
+     *
+     * @param bannerId The ID of the banner to update.
+     * @param weaponBannerUpdateDTO DTO containing the updated banner details.
+     * @return A DTO of the updated weapon banner.
+     * @throws BannerNotFoundException if the banner with the specified ID does not exist.
+     * @throws LimitException if the number of weapons provided is incorrect.
+     * @throws InvalidImageException if there is an error processing the new image.
+     */
     @Transactional
     public WeaponBannerResponseDTO updateWeaponBanner(Long bannerId, WeaponBannerUpdateDTO weaponBannerUpdateDTO) {
         Banner banner = getBanner(bannerId);
@@ -216,6 +256,13 @@ public class AdminWeaponBannerService {
         );
     }
 
+    /**
+     * Performs a soft delete on a weapon banner and its unit associations.
+     *
+     * @param bannerId The ID of the banner to delete.
+     * @return A DTO of the deleted banner information.
+     * @throws BannerNotFoundException if the banner with the specified ID does not exist.
+     */
     @Transactional
     public WeaponBannerResponseDTO deleteWeaponBanner(Long bannerId) {
         Banner banner = getBanner(bannerId);
@@ -243,6 +290,13 @@ public class AdminWeaponBannerService {
         );
     }
 
+    /**
+     * Filters and validates 4-star weapons from a list of banner units.
+     *
+     * @param bannerUnits List of units associated with a banner.
+     * @return A list of 4-star weapons.
+     * @throws LimitException if the count of 4-star weapons is not exactly 5.
+     */
     private static List<Unit> getFourStarWeapons(List<BannerUnit> bannerUnits) {
         List<Unit> fourStarWeapons = bannerUnits.stream()
                 .map(BannerUnit::getUnit)
@@ -256,12 +310,18 @@ public class AdminWeaponBannerService {
         }
     }
 
+    /**
+     * Filters and validates 5-star weapons from a list of banner units.
+     *
+     * @param bannerUnits List of units associated with a banner.
+     * @return A list of 5-star weapons.
+     * @throws LimitException if the count of 5-star weapons is not exactly 2.
+     */
     private static List<Unit> getFiveStarWeapon(List<BannerUnit> bannerUnits) {
         List<Unit> fiveStarWeapons = bannerUnits.stream().
                 map(BannerUnit::getUnit)
                 .filter(unit -> unit.getNumberOfStars().equals(NumberOfStarsEnum.FIVE_STARS))
                 .toList();
-        fiveStarWeapons.forEach(c -> System.out.println("=======================" + c.getUnitName()));
 
         if (fiveStarWeapons.size() != 2) {
             throw new LimitException("Amount of five stars weapons invalid");
@@ -270,6 +330,13 @@ public class AdminWeaponBannerService {
         }
     }
 
+    /**
+     * Helper method to retrieve a weapon banner entity or throw an exception if not found.
+     *
+     * @param bannerId The ID of the banner to find.
+     * @return The found Banner entity.
+     * @throws BannerNotFoundException if the banner does not exist.
+     */
     private Banner getBanner(Long bannerId) {
         return bannerRepository
                 .findWeaponBannersById(bannerId)

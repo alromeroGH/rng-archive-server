@@ -12,16 +12,32 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controller class for administrative management of weapon banners.
+ * It provides restricted endpoints to create, list, update, and delete weapon banner configurations.
+ *
+ * @author Alejo Romero
+ * @version 1.0
+ */
 @RestController
 @RequestMapping("/api/admin/weaponBanner")
 public class AdminWeaponBannerController {
     private final AdminWeaponBannerService adminWeaponBannerService;
 
-
+    /**
+     * Constructs the AdminWeaponBannerController with the necessary service.
+     * @param adminWeaponBannerService The service for administrative weapon banner operations.
+     */
     public AdminWeaponBannerController(AdminWeaponBannerService adminWeaponBannerService) {
         this.adminWeaponBannerService = adminWeaponBannerService;
     }
 
+    /**
+     * Creates a new weapon banner configuration.
+     *
+     * @param weaponBannerCreateDTO The DTO containing the details for the new weapon banner.
+     * @return A ResponseEntity containing the created weapon banner data or an error message if entities are not found or validation fails.
+     */
     @PostMapping("/create")
     public ResponseEntity<?> createWeaponBanner (@Valid @RequestBody WeaponBannerCreateDTO weaponBannerCreateDTO) {
         try {
@@ -37,6 +53,11 @@ public class AdminWeaponBannerController {
         }
     }
 
+    /**
+     * Retrieves a list of all existing weapon banners.
+     *
+     * @return A ResponseEntity containing a list of weapon banner response DTOs.
+     */
     @GetMapping
     public ResponseEntity<?> listCharacterBanner() {
         try {
@@ -49,6 +70,13 @@ public class AdminWeaponBannerController {
         }
     }
 
+    /**
+     * Updates an existing weapon banner configuration by its unique ID.
+     *
+     * @param id The ID of the weapon banner to update.
+     * @param weaponBannerUpdateDTO The DTO containing the updated banner information.
+     * @return A ResponseEntity containing the updated weapon banner data or an error message if not found or validation fails.
+     */
     @PostMapping("/update/{id}")
     public ResponseEntity<?> updateCharacterBanner(@PathVariable Long id, @Valid @RequestBody WeaponBannerUpdateDTO weaponBannerUpdateDTO) {
         try {
@@ -64,6 +92,12 @@ public class AdminWeaponBannerController {
         }
     }
 
+    /**
+     * Deletes a specific weapon banner configuration by its unique ID.
+     *
+     * @param id The ID of the weapon banner to delete.
+     * @return A ResponseEntity containing the deleted weapon banner data or an error message if not found or deletion is restricted.
+     */
     @PostMapping("/delete/{id}")
     public ResponseEntity<?> deleteCharacterBanner(@PathVariable Long id) {
         try {

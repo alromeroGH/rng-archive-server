@@ -22,6 +22,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service class for administrative management of character banners.
+ * Handles the business logic for creating, updating, listing, and soft-deleting
+ * limited character banners, ensuring correct unit rarities and counts.
+ *
+ * @author Alejo Romero
+ * @version 1.0
+ */
 @Service
 public class AdminCharacterBannerService {
 
@@ -33,6 +41,14 @@ public class AdminCharacterBannerService {
     private final UnitRepository unitRepository;
     private final UnitMapper unitMapper;
 
+    /**
+     * Constructs the AdminCharacterBannerService with the required dependencies.
+     *
+     * @param bannerRepository Repository for banner data access.
+     * @param bannerUnitRepository Repository for managing relations between banners and units.
+     * @param unitRepository Repository for character unit data access.
+     * @param unitMapper Mapper for converting character entities to DTOs.
+     */
     public AdminCharacterBannerService(BannerRepository bannerRepository, BannerUnitRepository bannerUnitRepository, UnitRepository unitRepository, UnitMapper unitMapper) {
         this.bannerRepository = bannerRepository;
         this.bannerUnitRepository = bannerUnitRepository;
@@ -40,6 +56,17 @@ public class AdminCharacterBannerService {
         this.unitMapper = unitMapper;
     }
 
+    /**
+     * Creates a new limited character banner.
+     * Validates that exactly one 5-star character and three 4-star characters are provided.
+     *
+     * @param characterBannerCreateDTO DTO containing banner configuration and unit IDs.
+     * @return A DTO representing the created character banner.
+     * @throws UnitNotFoundException if any specified unit ID does not exist.
+     * @throws InvalidUnitException if character rarities do not match requirements.
+     * @throws LimitException if the number of 4-star characters is not exactly three.
+     * @throws InvalidImageException if the banner image cannot be saved.
+     */
     @Transactional
     public CharacterBannerResponseDTO createCharacterBanner(CharacterBannerCreateDTO characterBannerCreateDTO) {
         Unit fiveStarCharacter = unitRepository.findById(characterBannerCreateDTO.getFiveStarCharacterId())
@@ -109,6 +136,11 @@ public class AdminCharacterBannerService {
         );
     }
 
+    /**
+     * Retrieves a list of all active character banners.
+     *
+     * @return A list of CharacterBannerResponseDTOs.
+     */
     public List<CharacterBannerResponseDTO> listCharacterBanner() {
         List<Banner> banners = bannerRepository.findCharacterBanners();
 
@@ -138,6 +170,16 @@ public class AdminCharacterBannerService {
         return characterBanners;
     }
 
+    /**
+     * Updates an existing character banner's details and unit composition.
+     * Existing unit associations are soft-deleted before adding the new ones.
+     *
+     * @param bannerId The ID of the banner to update.
+     * @param characterBannerUpdateDTO DTO containing updated banner fields.
+     * @return A DTO of the updated character banner.
+     * @throws BannerNotFoundException if the banner ID is invalid.
+     * @throws UnitNotFoundException if the new unit IDs are not found.
+     */
     @Transactional
     public CharacterBannerResponseDTO updateCharacterBanner(Long bannerId, CharacterBannerUpdateDTO characterBannerUpdateDTO) {
         Banner banner = getBanner(bannerId);
@@ -208,6 +250,13 @@ public class AdminCharacterBannerService {
         );
     }
 
+    /**
+     * Performs a soft delete on a character banner and all its unit associations.
+     *
+     * @param bannerId The unique identifier of the banner to delete.
+     * @return A DTO of the deleted banner.
+     * @throws BannerNotFoundException if the banner does not exist.
+     */
     @Transactional
     public CharacterBannerResponseDTO deleteCharacterBanner(Long bannerId) {
         Banner banner = getBanner(bannerId);
@@ -236,6 +285,13 @@ public class AdminCharacterBannerService {
         );
     }
 
+    /**
+     * Filters and validates the 4-star characters from a list of banner-unit relations.
+     *
+     * @param bannerUnits List of units associated with a banner.
+     * @return A list of 4-star character units.
+     * @throws LimitException if the count of 4-star characters is not exactly 3.
+     */
     private static List<Unit> getFourStarCharacters(List<BannerUnit> bannerUnits) {
         List<Unit> fourStarCharacters = bannerUnits.stream()
                 .map(BannerUnit::getUnit)
@@ -249,6 +305,12 @@ public class AdminCharacterBannerService {
         }
     }
 
+    /**
+     * Filters the 5-star character from a list of banner-unit relations.
+     *
+     * @param bannerUnits List of units associated with a banner.
+     * @return The 5-star character unit or null if not found.
+     */
     private static Unit getFiveStarCharacter(List<BannerUnit> bannerUnits) {
         return bannerUnits.stream().
                 map(BannerUnit::getUnit)
@@ -257,6 +319,13 @@ public class AdminCharacterBannerService {
                 .orElse(null);
     }
 
+    /**
+     * Helper method to find a character banner by ID or throw an exception.
+     *
+     * @param bannerId The ID of the banner to retrieve.
+     * @return The Banner entity.
+     * @throws BannerNotFoundException if the banner is not found.
+     */
     private Banner getBanner(Long bannerId) {
         return bannerRepository
                 .findCharacterBannersById(bannerId)

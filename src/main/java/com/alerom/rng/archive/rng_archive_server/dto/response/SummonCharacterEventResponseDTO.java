@@ -13,5 +13,6 @@ public class SummonCharacterEventResponseDTO {
     private int primoCount;
     private int winFiftyFiftyCount;
     private int winCapturingRadianceCount;
+    private boolean lostFiftyFifty;
     private int winFourStarCount;
 }
